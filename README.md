@@ -20,7 +20,16 @@ IG Examples testing:
    * Test1: Initiate SAML flow: https://docapp-ig.example.net:8443/saml/SPInitiatedSSO?RelayState=${urlEncodeQueryParameterNameOrValue(contexts.router.originalUri)}&binding=HTTP-POST&NameIDFormat=transient
 2. IG split():
    * Enabled Route(s): 20-split.json
-   * Test1: http://openig5.example.com:9000/splitTest/t1/t2/t3. Nothing returned in property splitting due to [OPENIG-1999](https://bugster.forgerock.org/jira/browse/OPENIG-1999) 
+   * Test1: http://ig5.example.com:9000/splitTest/t1/t2/t3. Nothing returned in property splitting due to [OPENIG-1999](https://bugster.forgerock.org/jira/browse/OPENIG-1999)
+3. Throttle:
+   * Enabled Route(s): 30-tx-throttle.json
+   * Test:
+    ```
+    $ curl -v -s -I -L -H 'action: throttle' http://ig5.example.com:9000/history/emp1/\[01-10000\] > throttleTest.txt 2>&1
+    $ grep "< HTTP/1.1" throttleTest.txt | sort | uniq -c
+      6 < HTTP/1.1 404 Not Found
+    9994 < HTTP/1.1 429 Too Many Requests
+    ```
 
 
 * * *

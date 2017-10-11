@@ -1,5 +1,4 @@
 {
-  "name": "split-test",
   "capture": "all",
   "properties": {
     "st0": "${split(request.uri,'/')}",

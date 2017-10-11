@@ -1,0 +1,22 @@
+{
+  "handler": {
+    "type": "Chain",
+    "config": {
+      "filters": [
+        {
+          "type": "ThrottlingFilter",
+          "name": "Throttling",
+          "config": {
+            "rate": {
+              "numberOfRequests": 6,
+              "duration": "60 s"
+            }
+          }
+        }
+      ],
+      "handler": "ClientHandler"
+    }
+  },
+  "baseURI": "http://apis.example.com:8010",
+  "condition": "${matches(request.uri.path, '^/history') and (request.headers['action'][0] == 'throttle')}"
+}
