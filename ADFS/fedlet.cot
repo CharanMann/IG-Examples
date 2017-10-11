@@ -1,0 +1,6 @@
+#Tue Jun 06 15:29:06 UTC 2017
+sun-fm-saml2-writerservice-url=
+sun-fm-cot-status=Active
+cot-name=CoT
+sun-fm-trusted-providers=http://adfs.igcorp.example.com/adfs/services/trust,OpenIG
+sun-fm-saml2-readerservice-url=

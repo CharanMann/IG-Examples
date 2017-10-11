@@ -1,0 +1,80 @@
+{
+  "baseURI": "http://docapp.example.net:8002",
+  "handler": {
+    "type": "DispatchHandler",
+    "config": {
+      "bindings": [
+        {
+          "comment": "Set session attributes on OpenIG nodeX",
+          "name": "Set Session Attributes",
+          "condition": "${empty session.openIGHome}",
+          "handler": {
+            "type": "Chain",
+            "config": {
+              "filters": [
+                {
+                  "comment": "Set session attributes on OpenIG nodeX",
+                  "name": "Session attributes",
+                  "type": "ScriptableFilter",
+                  "config": {
+                    "type": "application/x-groovy",
+                    "file": "SessionAttributes.groovy",
+                    "args": {
+                      "sessionAttributes": "username:demo password:changeit",
+                      "openIGHome": "${env['OPENIG_BASE']}"
+                    }
+                  },
+                  "capture": "all"
+                }
+              ],
+              "handler": {
+                "type": "StaticResponseHandler",
+                "config": {
+                  "status": 302,
+                  "reason": "Found",
+                  "entity": "<html><p><i><a href=\"${contexts.router.originalUri}\">Click here</a> to reload this page again. This will force Load balancer(roundrobin and non-sticky) to hit the other OpenIG node</i></p></html>"
+                },
+                "capture": "all"
+              }
+            },
+            "capture": "all"
+          }
+        },
+        {
+          "comment": "Retrieve session attributes on OpenIG nodeY",
+          "name": "Get Session Attributes",
+          "condition": "${not empty session.openIGHome}",
+          "handler": {
+            "comment": "Retrieve session attributes on OpenIG nodeY",
+            "name": "Get Session Attributes",
+            "type": "Chain",
+            "config": {
+              "filters": [
+                {
+                  "type": "StaticRequestFilter",
+                  "config": {
+                    "method": "POST",
+                    "uri": "http://docapp.example.net:8002",
+                    "form": {
+                      "username": [
+                        "${session.username}"
+                      ],
+                      "password": [
+                        "${session.password}"
+                      ]
+                    }
+                  },
+                  "capture": "all"
+                }
+              ],
+              "handler": "ClientHandler"
+            },
+            "capture": "all"
+          }
+        }
+      ]
+    }
+  },
+  "condition": "${matches(request.uri.path, '^/static')}",
+  "session": "JwtSession"
+}

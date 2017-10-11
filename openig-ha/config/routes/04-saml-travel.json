@@ -1,0 +1,101 @@
+{
+  "baseURI": "http://travel.example.net:8012",
+  "handler": {
+    "type": "DispatchHandler",
+    "config": {
+      "bindings": [
+        {
+          "comment": "(Optional) URL and Extensions exclusions",
+          "name": "Exclusions",
+          "condition": "${contains(request.uri.path, 'logout.html') or contains(request.uri.path, 'accessDenied.html') or contains(request.uri.path, '.ico') or contains(request.uri.path, '.js') or contains(request.uri.path, '.css') or contains(request.uri.path, '.jpg')}",
+          "handler": "ClientHandler",
+          "capture": "all"
+        },
+        {
+          "comment": "SAML federation handler for /saml",
+          "name": "Saml Federation Handler",
+          "condition": "${matches(request.uri.path, '^/saml')}",
+          "handler": {
+            "type": "SamlFederationHandler",
+            "config": {
+              "assertionMapping": {
+                "uid": "uid",
+                "mail": "mail"
+              },
+              "subjectMapping": "subjectName",
+              "redirectURI": "http://openig.example.net:9000/travelApp"
+            },
+            "capture": "all"
+          }
+        },
+        {
+          "comment": "SP init SSO in case user is not authenticated",
+          "name": "SP init SSO",
+          "condition": "${empty session.mail}",
+          "handler": {
+            "type": "StaticResponseHandler",
+            "config": {
+              "status": 302,
+              "reason": "Found",
+              "headers": {
+                "Location": [
+                  "http://openig.example.net:9000/saml/SPInitiatedSSO?RelayState=${urlEncodeQueryParameterNameOrValue(contexts.router.originalUri)}"
+                ]
+              }
+            },
+            "capture": "all"
+          }
+        },
+        {
+          "comment": "(Optional) Chain to set HTTP headers/ cookies required by SP app",
+          "name": "SP Chain",
+          "condition": "${not empty session.mail}",
+          "handler": {
+            "type": "Chain",
+            "config": {
+              "filters": [
+                {
+                  "comment": "(Optional) Set HTTP headers for SP app",
+                  "name": "SP Headers",
+                  "type": "HeaderFilter",
+                  "config": {
+                    "messageType": "REQUEST",
+                    "add": {
+                      "username": [
+                        "${session.uid}"
+                      ],
+                      "mail": [
+                        "${session.mail}"
+                      ]
+                    }
+                  },
+                  "capture": "all"
+                },
+                {
+                  "comment": "(Optional) Set cookie for SP app",
+                  "name": "SP Cookie",
+                  "type": "ScriptableFilter",
+                  "config": {
+                    "type": "application/x-groovy",
+                    "file": "SPCookie.groovy",
+                    "args": {
+                      "cookieName": "spCookie",
+                      "cookieDomain": ".example.net",
+                      "cookiePath": "/",
+                      "cookieValue": "username:${session.uid} mail:${session.mail}"
+                    }
+                  },
+                  "capture": "all"
+                }
+              ],
+              "handler": "ClientHandler"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "condition": "${matches(request.uri.path, '^/travelApp') or matches(request.uri.path, '^/saml')}",
+  "session": "JwtSession"
+}
+

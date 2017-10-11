@@ -1,0 +1,77 @@
+{
+  "baseURI": "http://docapp.example.net:8081",
+  "handler": {
+    "type": "DispatchHandler",
+    "config": {
+      "bindings": [
+        {
+          "comment": "SAML federation handler for /saml",
+          "name": "Saml Federation Handler",
+          "condition": "${matches(request.uri.path, '^/saml')}",
+          "handler": {
+            "type": "SamlFederationHandler",
+            "config": {
+              "assertionMapping": {
+                "UPN": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn"
+              },
+              "subjectMapping": "uid",
+              "redirectURI": "https://docapp-ig.example.net:8443/home"
+            },
+            "capture": "all"
+          }
+        },
+        {
+          "comment": "SP init SSO in case user is not authenticated",
+          "name": "SP init SSO",
+          "condition": "${empty session.uid}",
+          "handler": {
+            "type": "StaticResponseHandler",
+            "config": {
+              "status": 302,
+              "reason": "Found",
+              "headers": {
+                "Location": [
+                  "https://docapp-ig.example.net:8443/saml/SPInitiatedSSO?RelayState=${urlEncodeQueryParameterNameOrValue(contexts.router.originalUri)}&binding=HTTP-POST&NameIDFormat=transient"
+                ]
+              }
+            },
+            "capture": "all"
+          }
+        },
+        {
+          "comment": "(Optional) Chain to set HTTP headers required by SP app",
+          "name": "SP Chain",
+          "condition": "${not empty session.uid}",
+          "handler": {
+            "type": "Chain",
+            "config": {
+              "filters": [
+                {
+                  "comment": "(Optional) Set HTTP headers for SP app",
+                  "name": "SP Headers",
+                  "type": "HeaderFilter",
+                  "config": {
+                    "messageType": "REQUEST",
+                    "add": {
+                      "username": [
+                        "${session.uid}"
+                      ],
+                      "UPN": [
+                        "${session.UPN}"
+                      ]
+                    }
+                  },
+                  "capture": "all"
+                }
+              ],
+              "handler": "ClientHandler"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "condition": "${matches(request.uri.path, '^/home') or matches(request.uri.path, '^/saml')}",
+  "session": "JwtSession"
+}
+

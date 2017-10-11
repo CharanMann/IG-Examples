@@ -1,0 +1,23 @@
+c:[Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn"]
+ => issue(Type = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier",
+          Issuer = c.Issuer, OriginalIssuer = c.OriginalIssuer,
+               Value = c.Value, ValueType = c.ValueType,
+               Properties["http://schemas.xmlsoap.org/ws/2005/05/identity/claimproperties/format"]
+                    = "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
+               Properties["http://schemas.xmlsoap.org/ws/2005/05/identity/claimproperties/namequalifier"]
+                    = "http://idp01.bbb.local/adfs/services/trust",
+               Properties["http://schemas.xmlsoap.org/ws/2005/05/identity/claimproperties/spnamequalifier"]
+                    = https://sso01.aaa.local:8443/opensso);
+                    
+                    
+                    https://sso.aaa.local:8443/opensso/saml2/jsp/spSSOInit.jsp?metaAlias=/sp&NameIDFormat=transient&idpEntityID=http://IDP01.bbb.local/adfs/services/trust&binding=HTTP-POST|https://sso.aaa.local:8443/opensso/saml2/jsp/spSSOInit.jsp?metaAlias=/sp&NameIDFormat=transient&idpEntityID=http://IDP01.bbb.local/adfs/services/trust&binding=HTTP-POST
+                    
+                    http://www.sp.sample:8080/openam/saml2/jsp/spSSOInit.jsp
+?metaAlias=/sp
+&idpEntityID=http%3A%2F%2Fwww.idp.sample%3A8080%2Fopenam
+&RelayState=http%3A%2F%2Fwww.sp.sample%3A8080%2Fopenam%2Fidm%2FEndUser
+
+AQIC5BHNSjLwT303GqndmHbyYvzP9Tz7OAnK
+
+
+/TS// ++JvmOptions -Xdebug;-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044

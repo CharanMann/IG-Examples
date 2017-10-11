@@ -1,0 +1,10 @@
+{
+  "handler": {
+    "type": "StaticResponseHandler",
+    "config": {
+      "status": 403,
+      "reason": "Unauthorized",
+      "entity": "Restricted area. You do not have sufficient privileges."
+    }
+  }
+}

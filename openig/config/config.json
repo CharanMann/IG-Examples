@@ -1,0 +1,25 @@
+{
+  "handler": {
+    "type": "Router",
+    "audit": "global",
+    "capture": "all"
+  },
+  "heap": [
+    {
+      "name": "LogSink",
+      "type": "FileLogSink",
+      "config": {
+        "file": "${env['OPENIG_BASE']}/logs/openig.log",
+        "level": "DEBUG"
+      }
+    },
+    {
+      "name": "capture",
+      "type": "CaptureDecorator",
+      "config": {
+        "_captureEntity": true,
+        "_captureContext": true
+      }
+    }
+  ]
+}

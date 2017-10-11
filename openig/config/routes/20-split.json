@@ -1,0 +1,18 @@
+{
+  "name": "split-test",
+  "capture": "all",
+  "properties": {
+    "st0": "${split(request.uri,'/')}",
+    "st1": "${split(request.uri,'/')[1]}",
+    "st2": "Request URI from props: ${request.uri}"
+  },
+  "handler": {
+    "type": "StaticResponseHandler",
+    "config": {
+      "status": 200,
+      "reason": "Split testing",
+      "entity": "\nRequest URI: ${toString(request.uri)}\n\nSplit URI: ${split(request.uri,'/')}\nSplit array[4]: ${split(request.uri,'/')[4]}\n\nProperties splitting \nst0: ${st0} \nst1: ${st1} \nst2: ${st2}"
+    }
+  },
+  "condition": "${matches(request.uri.path, '^/splitTest')}"
+}

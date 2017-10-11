@@ -1,0 +1,40 @@
+{
+  "handler": {
+    "type": "Router",
+    "audit": "global",
+    "capture": "all"
+  },
+  "heap": [
+    {
+      "name": "LogSink",
+      "type": "FileLogSink",
+      "config": {
+        "file": "${env['OPENIG_BASE']}/logs/openig.log",
+        "level": "DEBUG"
+      }
+    },
+    {
+      "name": "JwtSession",
+      "type": "JwtSession",
+      "config": {
+        "keystore": {
+          "type": "KeyStore",
+          "config": {
+            "url": "file://${env['OPENIG_BASE']}/config/keystore.jks",
+            "password": "password"
+          }
+        },
+        "alias": "openig",
+        "password": "password"
+      }
+    },
+    {
+      "name": "capture",
+      "type": "CaptureDecorator",
+      "config": {
+        "_captureEntity": true,
+        "_captureContext": true
+      }
+    }
+  ]
+}
