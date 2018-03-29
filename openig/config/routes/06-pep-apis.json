@@ -1,0 +1,72 @@
+{
+  "baseURI": "http://apis.example.com:8010",
+  "handler": {
+    "comment": "OpenAM chain for authentication and authorization check",
+    "name": "OpenAM Chain",
+    "type": "Chain",
+    "config": {
+      "filters": [
+        {
+          "comment": "Scripted filter for OpenAM basic authentication",
+          "name": "OpenAM Basic Authentication",
+          "type": "ScriptableFilter",
+          "config": {
+            "type": "application/x-groovy",
+            "file": "OpenAMBasicAuthFilter.groovy",
+            "args": {
+              "openamUrl": "${frConfigs.amUrl}",
+              "realm" : "${frConfigs.amRealm}"
+            }
+          },
+          "capture": "all"
+        },
+        {
+          "comment": "(Optional) Access Denied check filter",
+          "name": "Access Denied check filter",
+          "type": "SwitchFilter",
+          "config": {
+            "onResponse": [
+              {
+                "condition": "${response.status.code == 401}",
+                "handler": {
+                  "name": "AccessDeniedHandler",
+                  "type": "StaticResponseHandler",
+                  "config": {
+                    "status": 403,
+                    "reason": "Forbidden",
+                    "headers": {
+                      "Content-Type": [
+                        "application/json; charset=utf-8"
+                      ]
+                    },
+                    "entity": "{\"code\": 403,\"reason\":\"Forbidden\",\"message\":\"Authorization Failed\"}"
+                  }
+                },
+                "capture": "all"
+              }
+            ]
+          },
+          "capture": "all"
+        },
+        {
+          "comment": "OpenAM Authorization check filter",
+          "name": "OpenAM Authorization",
+          "type": "PolicyEnforcementFilter",
+          "config": {
+            "openamUrl": "${frConfigs.amUrl}",
+            "pepUsername": "${frConfigs.amPolicyAdminUid}",
+            "pepPassword": "${frConfigs.amPolicyAdminPw}",
+            "pepRealm" : "${frConfigs.amRealm}",
+            "realm": "${frConfigs.amRealm}",
+            "application": "${frConfigs.amPolicyApp}",
+            "ssoTokenSubject": "${attributes.tokenId}"
+          },
+          "capture": "all"
+        }
+        // (Optional) Can add additional filters to inject user attributes in HTTP headers
+      ],
+      "handler": "ClientHandler"
+    }
+  },
+  "condition": "${matches(request.uri.path, '^/txHistory')}"
+}

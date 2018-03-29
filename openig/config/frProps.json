@@ -1,0 +1,8 @@
+{
+  "amUrl": "http://openam551.example.com:8989/openam",
+  "amRealm": "employees",
+  "amPolicyAdminUid": "policyAdmin",
+  "amPolicyAdminPw": "password",
+  "amPolicyApp": "OpenIG",
+  "ssoCookieName": "iPlanetDirectoryPro"
+}

@@ -1,0 +1,44 @@
+{
+  "baseURI": "http://apis.example.net:8010",
+  "handler": {
+    "type": "Chain",
+    "config": {
+      "filters": [
+        {
+          "comment": "OAuth2 Resource Server",
+          "type": "OAuth2ResourceServerFilter",
+          "config": {
+            "providerHandler": "ClientHandler",
+            "scopes": [
+              "uid",
+              "mail"
+            ],
+            "tokenInfoEndpoint": "http://openam.example.com:18080/openam/oauth2/employees/tokeninfo",
+            "requireHttps": false,
+            "target": "${attributes.token}"
+          },
+          "capture": "all"
+        },
+        {
+          "comment": "(Optional) Set OAuth2 scopes as HTTP headers",
+          "name": "Application Headers",
+          "type": "HeaderFilter",
+          "config": {
+            "messageType": "REQUEST",
+            "add": {
+              "username": [
+                "${attributes.token.info.uid}"
+              ],
+              "mail": [
+                "${attributes.token.info.mail}"
+              ]
+            }
+          },
+          "capture": "all"
+        }
+      ],
+      "handler": "ClientHandler"
+    }
+  },
+  "condition": "${matches(request.uri.path, '^/history')}"
+}

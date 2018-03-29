@@ -1,0 +1,58 @@
+{
+  "name": "07-oidc-igSampleApp",
+  "baseURI": "http://igApp.example.com:8081",
+  "condition": "${matches(request.uri.path, '^/home/id_token')}",
+  "monitor": false,
+  "handler": {
+    "type": "Chain",
+    "config": {
+      "filters": [
+        {
+          "name": "OAuth2ClientFilter-1",
+          "type": "OAuth2ClientFilter",
+          "config": {
+            "clientEndpoint": "/home/id_token",
+            "failureHandler": {
+              "type": "StaticResponseHandler",
+              "config": {
+                "status": 500,
+                "headers": {
+                  "Content-Type": [
+                    "text/plain"
+                  ]
+                },
+                "entity": "An error occurred during the OAuth2 setup."
+              }
+            },
+            "registrations": [
+              {
+                "name": "oidc-user-info-client",
+                "type": "ClientRegistration",
+                "config": {
+                  "clientId": "myClientID",
+                  "clientSecret": "password",
+                  "issuer": {
+                    "name": "Issuer",
+                    "type": "Issuer",
+                    "config": {
+                      "wellKnownEndpoint": "${frConfigs.amUrl}/oauth2/${frConfigs.amRealm}/.well-known/openid-configuration"
+                    }
+                  },
+                  "scopes": [
+                    "openid",
+                    "mail",
+                    "profile"
+                  ],
+                  "tokenEndpointAuthMethod": "client_secret_basic"
+                }
+              }
+            ],
+            "requireHttps": false,
+            "cacheExpiration": "disabled"
+          }
+        }
+      ],
+      "handler": "ClientHandler"
+    }
+  }
+}

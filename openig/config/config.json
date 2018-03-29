@@ -1,4 +1,9 @@
 {
+  "properties": {
+    "frConfigs": {
+      "$location": "${fileToUrl(openig.configDirectory)}/frProps.json"
+    }
+  },
   "handler": {
     "name": "_router",
     "type": "Router",

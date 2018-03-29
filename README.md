@@ -30,7 +30,20 @@ IG Examples testing:
       6 < HTTP/1.1 404 Not Found
     9994 < HTTP/1.1 429 Too Many Requests
     ```
-
+4. OIDC RP:
+   * Enabled Route(s): 30-tx-throttle.json
+   * Test: http://ig55.example.com:9292/home/id_token
+5. OpenIG-OpenAM PEP for REST APIs
+   * Enabled Route(s): 06-pep-apis.json
+   * Disabled Route(s): None
+   * Test1: Get TxHistory for all users: curl -X GET -H "X-OpenAM-Username: empAdmin" -H "X-OpenAM-Password: Passw0rd" "http://apis-ig.example.net:9002/txHistory/all". Result: Should return transaction history for all users
+   * Test2: Get TxHistory for all users using unauthorized account: curl -X GET -H "X-OpenAM-Username: emp1" -H "X-OpenAM-Password: Passw0rd" "http://apis-ig.example.net:9002/txHistory/all". Result: Should return authorization failed.          
+6. OpenIG-OAuth2 RS:
+   * Enabled Route(s): 10-oauth2rs-apis.json
+   * Disabled Route(s): None
+   * Test1: Acquire OAuth Access token by using OAuth Resource Owner Password Credentials flow : curl -X POST -H "Authorization: BASIC ZW1wbG95ZWVBcHA6cGFzc3dvcmQ=" -H "Content-Type: application/x-www-form-urlencoded" -d 'grant_type=password&username=emp1&password=Passw0rd&scope=uid mail' "http://openam.example.com:18080/openam/oauth2/employees/access_token" <br />
+     Get TxHistory for specified user: curl -X GET -H "Authorization: Bearer a04b0596-9ed7-4e7e-bd36-4008d901bcd2" "http://apis-ig.example.net:9002/history/emp1". Result: Should return transaction history for specified user.
+   * Test2: Get TxHistory for specified user using invalid OAuth Access token: curl -X GET -H "Authorization: Bearer a04b0596-9ed7-4e7e-bd36-qqqqqqqq" "http://apis-ig.example.net:9002/history/emp1" -v. Result: Should return error: "The access token provided is expired, revoked, malformed, or invalid for other reasons.".      
 
 * * *
 
