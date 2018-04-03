@@ -18,6 +18,67 @@
         "captureEntity": true,
         "_captureContext": true
       }
+    },
+    {
+      "name": "FRClientHandler",
+      "type": "Chain",
+      "config": {
+        "filters": [
+          "TransactionIdOutboundFilter"
+        ],
+        "handler": {
+          "type": "Delegate",
+          "config": {
+            "delegate": "SharedClientHandler"
+          },
+          "capture": "all"
+        }
+      }
+    },
+    {
+      "name": "SharedClientHandler",
+      "type": "ClientHandler",
+      "config": {
+        "numberOfWorkers": 2
+      }
+    },
+    {
+      "name": "JSONAuditService",
+      "type": "AuditService",
+      "config": {
+        "config": {},
+        "event-handlers": [
+          {
+            "class": "org.forgerock.audit.handlers.json.JsonAuditEventHandler",
+            "config": {
+              "name": "json",
+              "logDirectory": "${openig.baseDirectory.path}/${frConfigs.igAuditDir}",
+              "topics": [
+                "access"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "CSVAuditService",
+      "type": "AuditService",
+      "config": {
+        "config": {},
+        "event-handlers": [
+          {
+            "class": "org.forgerock.audit.handlers.csv.CsvAuditEventHandler",
+            "config": {
+              "name": "csv",
+              "logDirectory": "${openig.baseDirectory.path}/${frConfigs.igAuditDir}",
+              "topics": [
+                "access"
+              ]
+            }
+          }
+        ]
+      }
     }
   ]
 }

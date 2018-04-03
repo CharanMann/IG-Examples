@@ -1,0 +1,46 @@
+{
+  "baseURI": "http://apis.example.com:8010",
+  "condition": "${matches(request.uri.path, '^/txHistory')}",
+  "monitor": {
+    "enabled": true,
+    "percentiles": [
+      0.999,
+      0.9999,
+      0.99999
+    ]
+  },
+  "heap": [
+    {
+      "name": "capture",
+      "type": "CaptureDecorator",
+      "config": {
+        "captureEntity": true
+      }
+    },
+    {
+      "name": "ForgeRockClientHandler",
+      "type": "Chain",
+      "config": {
+        "filters": [
+          "TransactionIdOutboundFilter"
+        ],
+        "handler": {
+          "type": "Delegate",
+          "config": {
+            "delegate": "SharedClientHandler"
+          },
+          "capture": [
+            "request",
+            "response"
+          ]
+        }
+      }
+    },
+    {
+      "name": "SharedClientHandler",
+      "type": "ClientHandler"
+    }
+  ],
+  "handler": "ClientHandler",
+  "auditService": "JSONAuditService"
+}

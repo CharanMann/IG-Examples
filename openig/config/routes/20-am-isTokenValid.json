@@ -1,7 +1,14 @@
 {
   "baseURI": "http://openam551.example.com:8989",
   "condition": "${matches(request.uri.path, '^/openam/identity/isTokenValid')}",
-  "monitor": false,
+  "monitor": {
+    "enabled": true,
+    "percentiles": [
+      0.25,
+      0.5,
+      0.75
+    ]
+  },
   "handler": {
     "type": "Chain",
     "capture": "all",
@@ -66,7 +73,8 @@
           "capture": "all"
         }
       ],
-      "handler": "ClientHandler"
+      "handler": "FRClientHandler",
+      "auditService": "CSVAuditService"
     }
   }
 }

@@ -1,5 +1,6 @@
 {
   "baseURI": "http://apis.example.com:8010",
+  "condition": "${matches(request.uri.path, '^/txHistory')}",
   "handler": {
     "comment": "OpenAM chain for authentication and authorization check",
     "name": "OpenAM Chain",
@@ -65,8 +66,8 @@
         }
         // (Optional) Can add additional filters to inject user attributes in HTTP headers
       ],
-      "handler": "ClientHandler"
+      "handler": "ClientHandler",
+      "auditService": "JSONAuditService"
     }
-  },
-  "condition": "${matches(request.uri.path, '^/txHistory')}"
+  }
 }

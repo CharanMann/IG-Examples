@@ -43,8 +43,14 @@ IG Examples testing:
    * Disabled Route(s): None
    * Test1: Acquire OAuth Access token by using OAuth Resource Owner Password Credentials flow : curl -X POST -H "Authorization: BASIC ZW1wbG95ZWVBcHA6cGFzc3dvcmQ=" -H "Content-Type: application/x-www-form-urlencoded" -d 'grant_type=password&username=emp1&password=Passw0rd&scope=uid mail' "http://openam.example.com:18080/openam/oauth2/employees/access_token" <br />
      Get TxHistory for specified user: curl -X GET -H "Authorization: Bearer a04b0596-9ed7-4e7e-bd36-4008d901bcd2" "http://apis-ig.example.net:9002/history/emp1". Result: Should return transaction history for specified user.
-   * Test2: Get TxHistory for specified user using invalid OAuth Access token: curl -X GET -H "Authorization: Bearer a04b0596-9ed7-4e7e-bd36-qqqqqqqq" "http://apis-ig.example.net:9002/history/emp1" -v. Result: Should return error: "The access token provided is expired, revoked, malformed, or invalid for other reasons.".      
-
+   * Test2: Get TxHistory for specified user using invalid OAuth Access token: curl -X GET -H "Authorization: Bearer a04b0596-9ed7-4e7e-bd36-qqqqqqqq" "http://apis-ig.example.net:9002/history/emp1" -v. Result: Should return error: "The access token provided is expired, revoked, malformed, or invalid for other reasons.".
+7. isTokenValid AM legacy:
+   * Enabled Route(s): 20-am-isTokenValid.json
+   * Disabled Route(s): None
+   * Test1: Legacy call with valid SSO token : curl -X POST http://ig55.example.com:9292/openam/identity/isTokenValid -H 'Content-Type: application/x-www-form-urlencoded'  -d 'tokenid=<SSOTokenId>'. <br />
+     boolean=true
+   
+        
 * * *
 
 Copyright © 2017 ForgeRock, AS.
