@@ -73,8 +73,8 @@
           "capture": "all"
         }
       ],
-      "handler": "FRClientHandler",
-      "auditService": "CSVAuditService"
+      "handler": "FRClientHandler"
     }
-  }
+  },
+  "auditService": "JSONAuditService"
 }

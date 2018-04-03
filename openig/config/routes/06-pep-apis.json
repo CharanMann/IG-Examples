@@ -66,8 +66,8 @@
         }
         // (Optional) Can add additional filters to inject user attributes in HTTP headers
       ],
-      "handler": "ClientHandler",
-      "auditService": "JSONAuditService"
+      "handler": "ClientHandler"
     }
-  }
+  },
+  "auditService": "JSONAuditService"
 }
