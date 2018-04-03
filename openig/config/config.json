@@ -15,7 +15,7 @@
       "name": "capture",
       "type": "CaptureDecorator",
       "config": {
-        "_captureEntity": true,
+        "captureEntity": true,
         "_captureContext": true
       }
     }

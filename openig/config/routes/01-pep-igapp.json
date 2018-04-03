@@ -1,0 +1,36 @@
+{
+  "name": "01-pep-igApp",
+  "baseURI": "http://igApp.example.com:8081",
+  "condition": "${matches(request.uri.path, '^/home')}",
+  "monitor": false,
+  "handler": {
+    "type": "Chain",
+    "config": {
+      "filters": [
+        {
+          "name": "SingleSignOnFilter-1",
+          "type": "SingleSignOnFilter",
+          "config": {
+            "openamUrl": "${frConfigs.amUrl}",
+            "realm": "${frConfigs.amRealm}",
+            "cookieName": "${frConfigs.ssoCookieName}"
+          }
+        },
+        {
+          "name": "PolicyEnforcementFilter-1",
+          "type": "PolicyEnforcementFilter",
+          "config": {
+            "openamUrl": "${frConfigs.amUrl}",
+            "pepUsername": "${frConfigs.amPolicyAdminUid}",
+            "pepPassword": "${frConfigs.amPolicyAdminPw}",
+            "pepRealm": "${frConfigs.amRealm}",
+            "realm": "${frConfigs.amRealm}",
+            "application": "${frConfigs.igSampleApp}",
+            "ssoTokenSubject": "${contexts.ssoToken.value}"
+          }
+        }
+      ],
+      "handler": "ClientHandler"
+    }
+  }
+}

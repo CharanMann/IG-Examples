@@ -1,0 +1,72 @@
+{
+  "baseURI": "http://openam551.example.com:8989",
+  "condition": "${matches(request.uri.path, '^/openam/identity/isTokenValid')}",
+  "monitor": false,
+  "handler": {
+    "type": "Chain",
+    "capture": "all",
+    "config": {
+      "filters": [
+        {
+          "name": "tokenValidateResponse",
+          "type": "SwitchFilter",
+          "config": {
+            "onResponse": [
+              {
+                "condition": "${!response.entity.json.get('valid')}",
+                "handler": {
+                  "name": "invalidSessionHandler",
+                  "type": "StaticResponseHandler",
+                  "config": {
+                    "status": 200,
+                    "headers": {
+                      "content-type": [
+                        "text/plain"
+                      ]
+                    },
+                    "entity": "boolean=false"
+                  },
+                  "capture": "all"
+                }
+              },
+              {
+                "condition": "${response.entity.json.get('valid')}",
+                "handler": {
+                  "name": "validSessionHandler",
+                  "type": "StaticResponseHandler",
+                  "config": {
+                    "status": 200,
+                    "headers": {
+                      "content-type": [
+                        "text/plain"
+                      ]
+                    },
+                    "entity": "boolean=true"
+                  },
+                  "capture": "all"
+                }
+              }
+            ]
+          },
+          "capture": "all"
+        },
+        {
+          "name": "tokenValidate",
+          "type": "StaticRequestFilter",
+          "config": {
+            "uri": "${frConfigs.amUrl}/json/sessions?_action=validate",
+            "method": "POST",
+            "headers": {
+              "Content-Type": [
+                "application/json"
+              ]
+            },
+            "entity": "{ \"tokenId\": \"${request.form.tokenid[0]}\" }"
+          },
+          "capture": "all"
+        }
+      ],
+      "handler": "ClientHandler"
+    }
+  }
+}

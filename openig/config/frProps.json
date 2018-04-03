@@ -4,5 +4,6 @@
   "amPolicyAdminUid": "policyAdmin",
   "amPolicyAdminPw": "password",
   "amPolicyApp": "OpenIG",
+  "igSampleApp": "IGSampleApp",
   "ssoCookieName": "iPlanetDirectoryPro"
 }
