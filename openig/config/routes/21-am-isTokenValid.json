@@ -1,14 +1,6 @@
 {
   "baseURI": "http://openam551.example.com:8989",
   "condition": "${matches(request.uri.path, '^/openam/identity/isTokenValid')}",
-  "monitor": {
-    "enabled": true,
-    "percentiles": [
-      0.25,
-      0.5,
-      0.75
-    ]
-  },
   "capture": "all",
   "handler": {
     "type": "Chain",
@@ -16,14 +8,27 @@
     "config": {
       "filters": [
         {
-          "name": "tokenValidateResponse",
+          "name": "addSSOHeader",
+          "type": "HeaderFilter",
+          "config": {
+            "messageType": "REQUEST",
+            "add": {
+              "cookie": [
+                "${frConfigs.ssoCookieName}=${request.form.tokenid[0]}"
+              ]
+            }
+          },
+          "capture": "all"
+        },
+        {
+          "name": "checkResponse",
           "type": "SwitchFilter",
           "config": {
             "onResponse": [
               {
-                "condition": "${!response.entity.json.get('valid')}",
+                "condition": "${response.status.code == 302}",
                 "handler": {
-                  "name": "invalidSessionHandler",
+                  "name": "invalidToken",
                   "type": "StaticResponseHandler",
                   "config": {
                     "status": 200,
@@ -38,9 +43,9 @@
                 }
               },
               {
-                "condition": "${response.entity.json.get('valid')}",
+                "condition": "${response.status.code == 200}",
                 "handler": {
-                  "name": "validSessionHandler",
+                  "name": "validToken",
                   "type": "StaticResponseHandler",
                   "config": {
                     "status": 200,
@@ -59,22 +64,31 @@
           "capture": "all"
         },
         {
-          "name": "tokenValidate",
-          "type": "StaticRequestFilter",
+          "name": "amSSOFilter",
+          "type": "SingleSignOnFilter",
           "config": {
-            "uri": "${frConfigs.amUrl}/json/sessions?_action=validate",
-            "method": "POST",
-            "headers": {
-              "Content-Type": [
-                "application/json"
-              ]
-            },
-            "entity": "{ \"tokenId\": \"${request.form.tokenid[0]}\" }"
+            "amHandler": "ForgeRockClientHandler",
+            "openamUrl": "${frConfigs.amUrl}",
+            "realm": "${frConfigs.amRealm}",
+            "cookieName": "${frConfigs.ssoCookieName}"
           },
           "capture": "all"
         }
       ],
-      "handler": "FRClientHandler"
+      "handler": {
+        "name": "validSessionHandler",
+        "type": "StaticResponseHandler",
+        "config": {
+          "status": 200,
+          "headers": {
+            "content-type": [
+              "text/plain"
+            ]
+          },
+          "entity": "boolean=true"
+        },
+        "capture": "all"
+      }
     }
   },
   "auditService": "JSONAuditService"

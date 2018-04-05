@@ -11,6 +11,7 @@
           "name": "SingleSignOnFilter-1",
           "type": "SingleSignOnFilter",
           "config": {
+            "amHandler": "ForgeRockClientHandler",
             "openamUrl": "${frConfigs.amUrl}",
             "realm": "${frConfigs.amRealm}",
             "cookieName": "${frConfigs.ssoCookieName}"

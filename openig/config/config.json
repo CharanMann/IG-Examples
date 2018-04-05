@@ -7,8 +7,7 @@
   "handler": {
     "name": "_router",
     "type": "Router",
-    "audit": "global",
-    "capture": "all"
+    "audit": "global"
   },
   "heap": [
     {

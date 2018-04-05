@@ -1,0 +1,54 @@
+{
+  "baseURI": "http://openam551.example.com:8989",
+  "condition": "${matches(request.uri.path, '^/openam/identity/attributes')}",
+  "session": "JwtSession",
+  "handler": {
+    "type": "Chain",
+    "capture": "all",
+    "config": {
+      "filters": [
+        {
+          "name": "ScriptableFilter-myFilter",
+          "type": "ScriptableFilter",
+          "config": {
+            "type": "application/x-groovy",
+            "source": [
+              "println \"Hello there ##################\"",
+              "println request.form.subjectid[0]",
+              "return next.handle(context, request)"
+            ]
+          }
+        },
+        {
+          "name": "policyEnforcementFilter",
+          "type": "PolicyEnforcementFilter",
+          "config": {
+            "openamUrl": "${frConfigs.amUrl}",
+            "pepUsername": "${frConfigs.amPolicyAdminUid}",
+            "pepPassword": "${frConfigs.amPolicyAdminPw}",
+            "pepRealm": "${frConfigs.amRealm}",
+            "realm": "${frConfigs.amRealm}",
+            "application": "AMLegacy",
+            "ssoTokenSubject": "${request.form.subjectid[0]}"
+          },
+          "capture": "all"
+        },
+        {
+          "name": "ScriptableFilter-myFilter",
+          "type": "ScriptableFilter",
+          "config": {
+            "type": "application/x-groovy",
+            "source": [
+              "println \"Hello there ##################\"",
+              "println contexts",
+              "return next.handle(context, request)"
+            ]
+          }
+        }
+      ],
+      "handler": "FRClientHandler"
+    }
+  },
+  "auditService": "JSONAuditService"
+}
+

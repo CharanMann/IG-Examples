@@ -1,0 +1,11 @@
+{
+  "handler": {
+    "type": "StaticResponseHandler",
+    "config": {
+      "status": 200,
+      "reason": "Found",
+      "entity": "Server is ALIVE"
+    }
+  },
+  "condition": "${request.uri.path == '/isAlive'}"
+}
