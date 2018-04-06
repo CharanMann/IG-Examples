@@ -41,10 +41,18 @@
             "type": "application/x-groovy",
             "file": "createJWT.groovy",
             "args": {
-              "subject": "testSub",
-              "cookieName": "jwtCookie",
-              "cookieDomain": ".example.com",
-              "cookiePath": "/"
+              "subject": "testSub"
+            }
+          },
+          "capture": "all"
+        },
+        {
+          "name": "addJWTHeader",
+          "type": "HeaderFilter",
+          "config": {
+            "messageType": "REQUEST",
+            "add": {
+              "jwtHeader": [ "${attributes.jwtToken}" ]
             }
           },
           "capture": "all"

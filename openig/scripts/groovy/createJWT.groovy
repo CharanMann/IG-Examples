@@ -18,11 +18,8 @@
  * IG-Examples: Created by Charan Mann on 4/5/18 , 8:37 PM.
  */
 
+
 import io.jsonwebtoken.Jwts
-import org.forgerock.http.header.SetCookieHeader
-import org.forgerock.http.protocol.Cookie
-import org.forgerock.http.protocol.Response
-import org.forgerock.util.AsyncFunction
 
 import static io.jsonwebtoken.SignatureAlgorithm.HS256
 
@@ -43,18 +40,9 @@ logger.info("Key: $key")
 logger.info("Token: $token")
 logger.info("Name: $name")
 
-Cookie jwtCookie = new Cookie();
-jwtCookie.setName(cookieName)
-jwtCookie.setDomain(cookieDomain)
-jwtCookie.setPath(cookiePath)
-jwtCookie.setValue(token)
+attributes.jwtToken = token
 
-List cookies = new ArrayList();
-cookies.add(jwtCookie)
-SetCookieHeader cookieHeader = new SetCookieHeader(cookies)
-
+// Call the next handler. This returns when the request has been handled.
 return next.handle(context, request)
-        .thenAsync({ Response.newResponsePromise(it) } as AsyncFunction)
-        .thenOnResult { it.headers['Set-Cookie'] = cookieHeader.values }
 
 
