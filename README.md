@@ -2,6 +2,19 @@
 
 Various IG Examples <br />
 
+Disclaimer of Liability :
+=========================
+The sample code described herein is provided on an "as is" basis, without warranty of any kind, to the fullest extent permitted by law. 
+ForgeRock does not warrant or guarantee the individual success developers may have in implementing the sample code on their development platforms 
+or in production configurations.
+
+ForgeRock does not warrant, guarantee or make any representations regarding the use, results of use, accuracy, timeliness or completeness of any data 
+or information relating to the sample code. ForgeRock disclaims all warranties, expressed or implied, and in particular, disclaims all warranties of 
+merchantability, and warranties related to the code, or any service or software related thereto.
+
+ForgeRock shall not be liable for any direct, indirect or consequential damages or costs of any type arising out of any action taken by you or others 
+related to the sample code.
+
 Pre-requisites :
 ================
 * Versions used for this project: IG 5.0, AM 5.1.1
@@ -53,8 +66,6 @@ IG Examples testing:
         
 * * *
 
-Copyright © 2017 ForgeRock, AS.
-
 The contents of this file are subject to the terms of the Common Development and
 Distribution License (the License). You may not use this file except in compliance with the
 License.
@@ -67,4 +78,6 @@ the License file at legal/CDDLv1.0.txt. If applicable, add the following below t
 Header, with the fields enclosed by brackets [] replaced by your own identifying
 information: "Portions copyright [year] [name of copyright owner]".
 
-Portions Copyrighted 2017 Charan Mann
+Copyright 2018 ForgeRock AS.
+
+Portions Copyrighted 2018 Charan Mann
