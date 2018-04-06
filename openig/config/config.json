@@ -14,8 +14,19 @@
       "name": "capture",
       "type": "CaptureDecorator",
       "config": {
-        "captureEntity": true,
+        "_captureEntity": true,
         "_captureContext": true
+      }
+    },
+    {
+      "name": "XForwardedHeader",
+      "type": "HeaderFilter",
+      "comment": "Add a header to all requests",
+      "config": {
+        "messageType": "REQUEST",
+        "add": {
+          "X-Forwarded-For": [ "${contexts.client.remoteAddress} " ]
+        }
       }
     },
     {
@@ -23,7 +34,8 @@
       "type": "Chain",
       "config": {
         "filters": [
-          "TransactionIdOutboundFilter"
+          "TransactionIdOutboundFilter",
+          "XForwardedHeader"
         ],
         "handler": {
           "type": "Delegate",

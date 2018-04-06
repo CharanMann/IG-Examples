@@ -3,6 +3,7 @@
   "baseURI": "http://igApp.example.com:8081",
   "condition": "${matches(request.uri.path, '^/home')}",
   "monitor": false,
+  "capture": "all",
   "handler": {
     "type": "Chain",
     "config": {
@@ -15,7 +16,8 @@
             "openamUrl": "${frConfigs.amUrl}",
             "realm": "${frConfigs.amRealm}",
             "cookieName": "${frConfigs.ssoCookieName}"
-          }
+          },
+          "capture": "all"
         },
         {
           "name": "PolicyEnforcementFilter-1",
@@ -28,10 +30,28 @@
             "realm": "${frConfigs.amRealm}",
             "application": "${frConfigs.igSampleApp}",
             "ssoTokenSubject": "${contexts.ssoToken.value}"
-          }
+          },
+          "capture": "all"
+        },
+        {
+          "comment": "Set JWT cookie",
+          "name": "SetJWTCookie",
+          "type": "ScriptableFilter",
+          "config": {
+            "type": "application/x-groovy",
+            "file": "createJWT.groovy",
+            "args": {
+              "subject": "testSub",
+              "cookieName": "jwtCookie",
+              "cookieDomain": ".example.com",
+              "cookiePath": "/"
+            }
+          },
+          "capture": "all"
         }
       ],
       "handler": "ClientHandler"
-    }
+    },
+    "capture": "all"
   }
 }

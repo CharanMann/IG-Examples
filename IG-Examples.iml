@@ -59,5 +59,6 @@
     <orderEntry type="library" name="Maven: org.forgerock.commons.guava:forgerock-guava-cache:18.0.4" level="project" />
     <orderEntry type="library" name="Maven: org.forgerock.commons.guava:forgerock-guava-primitives:18.0.4" level="project" />
     <orderEntry type="library" name="Maven: org.forgerock.commons.guava:forgerock-guava-concurrent:18.0.4" level="project" />
+    <orderEntry type="library" name="Maven: io.jsonwebtoken:jjwt:0.7.0" level="project" />
   </component>
 </module>

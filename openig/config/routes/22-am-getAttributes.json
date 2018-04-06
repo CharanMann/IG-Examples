@@ -1,7 +1,6 @@
 {
   "baseURI": "http://openam551.example.com:8989",
   "condition": "${matches(request.uri.path, '^/openam/identity/attributes')}",
-  "session": "JwtSession",
   "handler": {
     "type": "Chain",
     "capture": "all",

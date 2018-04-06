@@ -67,7 +67,7 @@
           "name": "amSSOFilter",
           "type": "SingleSignOnFilter",
           "config": {
-            "amHandler": "ForgeRockClientHandler",
+            "amHandler": "FRClientHandler",
             "openamUrl": "${frConfigs.amUrl}",
             "realm": "${frConfigs.amRealm}",
             "cookieName": "${frConfigs.ssoCookieName}"
