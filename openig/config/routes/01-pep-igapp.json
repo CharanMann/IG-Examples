@@ -12,10 +12,10 @@
           "name": "SingleSignOnFilter-1",
           "type": "SingleSignOnFilter",
           "config": {
-            "amHandler": "ForgeRockClientHandler",
             "openamUrl": "${frConfigs.amUrl}",
             "realm": "${frConfigs.amRealm}",
-            "cookieName": "${frConfigs.ssoCookieName}"
+            "cookieName": "${frConfigs.ssoCookieName}",
+            "amHandler": "FRClientHandler"
           },
           "capture": "all"
         },
@@ -29,7 +29,8 @@
             "pepRealm": "${frConfigs.amRealm}",
             "realm": "${frConfigs.amRealm}",
             "application": "${frConfigs.igSampleApp}",
-            "ssoTokenSubject": "${contexts.ssoToken.value}"
+            "ssoTokenSubject": "${contexts.ssoToken.value}",
+            "amHandler": "FRClientHandler"
           },
           "capture": "all"
         },
