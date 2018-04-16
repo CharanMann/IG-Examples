@@ -3,6 +3,7 @@
   "baseURI": "http://igApp.example.com:8081",
   "condition": "${matches(request.uri.path, '^/home/id_token')}",
   "monitor": false,
+  "capture": "all",
   "handler": {
     "type": "Chain",
     "config": {
@@ -12,6 +13,7 @@
           "type": "OAuth2ClientFilter",
           "config": {
             "clientEndpoint": "/home/id_token",
+            "discoveryHandler": "FRClientHandler",
             "failureHandler": {
               "type": "StaticResponseHandler",
               "config": {
@@ -22,7 +24,8 @@
                   ]
                 },
                 "entity": "An error occurred during the OAuth2 setup."
-              }
+              },
+              "capture": "all"
             },
             "registrations": [
               {
@@ -53,6 +56,7 @@
         }
       ],
       "handler": "ClientHandler"
-    }
+    },
+    "capture": "all"
   }
 }

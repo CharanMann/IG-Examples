@@ -35,25 +35,32 @@
           "capture": "all"
         },
         {
-          "comment": "Set JWT cookie",
-          "name": "SetJWTCookie",
+          "name": "getAttribute",
           "type": "ScriptableFilter",
           "config": {
             "type": "application/x-groovy",
-            "file": "createJWT.groovy",
-            "args": {
-              "subject": "testSub"
-            }
+            "source": [
+              "def isMemberOf = contexts.policyDecision.attributes['isMemberOf']",
+              "logger.info(\"isMemberOf attribute value: $isMemberOf\")",
+              "if (isMemberOf != null) {",
+              " attributes.isMemberOf = isMemberOf[0]",
+              "  return next.handle(context, request)",
+              "} else {",
+              "  return next.handle(context, request)",
+              "}"
+            ]
           },
           "capture": "all"
         },
         {
-          "name": "addJWTHeader",
+          "name": "addHeader",
           "type": "HeaderFilter",
           "config": {
             "messageType": "REQUEST",
             "add": {
-              "jwtHeader": [ "${attributes.jwtToken}" ]
+              "group": [
+                "${attributes.isMemberOf}"
+              ]
             }
           },
           "capture": "all"
