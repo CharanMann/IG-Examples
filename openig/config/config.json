@@ -19,6 +19,17 @@
       }
     },
     {
+      "name": "AMService",
+      "type": "AmService",
+      "config": {
+        "amHandler": "FRClientHandler",
+        "url": "${frConfigs.amUrl}",
+        "realm": "${frConfigs.amRealm}",
+        "ssoTokenHeader": "${frConfigs.ssoCookieName}",
+        "version": "6.0"
+      }
+    },
+    {
       "name": "XForwardedHeader",
       "type": "HeaderFilter",
       "comment": "Add a header to all requests",

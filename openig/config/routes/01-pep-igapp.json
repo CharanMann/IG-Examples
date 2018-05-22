@@ -1,7 +1,8 @@
 {
   "name": "01-pep-igApp",
-  "baseURI": "http://igApp.example.com:8081",
+  "baseURI": "http://igApp6.example.com:8081",
   "condition": "${matches(request.uri.path, '^/home')}",
+  "auditService": "JSONAuditService",
   "monitor": false,
   "capture": "all",
   "handler": {
@@ -12,10 +13,8 @@
           "name": "SingleSignOnFilter-1",
           "type": "SingleSignOnFilter",
           "config": {
-            "openamUrl": "${frConfigs.amUrl}",
-            "realm": "${frConfigs.amRealm}",
-            "cookieName": "${frConfigs.ssoCookieName}",
-            "amHandler": "FRClientHandler"
+            "amService": "AMService",
+            "loginEndpoint": "${frConfigs.amUrl}?realm=${frConfigs.amRealm}&service=protectedTree&goto=${urlEncodeQueryParameterNameOrValue(contexts.router.originalUri)}"
           },
           "capture": "all"
         },
@@ -23,14 +22,12 @@
           "name": "PolicyEnforcementFilter-1",
           "type": "PolicyEnforcementFilter",
           "config": {
-            "openamUrl": "${frConfigs.amUrl}",
             "pepUsername": "${frConfigs.amPolicyAdminUid}",
             "pepPassword": "${frConfigs.amPolicyAdminPw}",
             "pepRealm": "${frConfigs.amRealm}",
-            "realm": "${frConfigs.amRealm}",
             "application": "${frConfigs.igSampleApp}",
             "ssoTokenSubject": "${contexts.ssoToken.value}",
-            "amHandler": "FRClientHandler"
+            "amService": "AMService"
           },
           "capture": "all"
         },
@@ -53,7 +50,7 @@
           "capture": "all"
         },
         {
-          "name": "addHeader",
+          "name": "addPolicyResponseHeader",
           "type": "HeaderFilter",
           "config": {
             "messageType": "REQUEST",
@@ -61,6 +58,25 @@
               "group": [
                 "${attributes.isMemberOf}"
               ]
+            }
+          },
+          "capture": "all"
+        },
+        {
+          "name": "SessionInfoFilter",
+          "type": "SessionInfoFilter",
+          "config": {
+            "amService": "AMService"
+          },
+          "capture": "all"
+        },
+        {
+          "name": "addSessionInfoHeaders",
+          "type": "HeaderFilter",
+          "config": {
+            "messageType": "REQUEST",
+            "add": {
+              "X-IG-SessionInfo": [ "username: ${contexts.amSession.username}, realm: ${contexts.amSession.realm}, AuthLevel: ${contexts.amSession.properties.AuthLevel}, maxSessionExpirationTime : ${contexts.amSession.maxSessionExpirationTime}" ]
             }
           },
           "capture": "all"

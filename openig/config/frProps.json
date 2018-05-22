@@ -1,7 +1,7 @@
 {
-  "amUrl": "http://openam551.example.com:8989/openam",
+  "amUrl": "http://am6.example.com:8080/am",
   "amRealm": "employees",
-  "amPolicyAdminUid": "policyAdmin",
+  "amPolicyAdminUid": "IG",
   "amPolicyAdminPw": "password",
   "amPolicyApp": "OpenIG",
   "igSampleApp": "IGSampleApp",
