@@ -1,0 +1,12 @@
+{
+  "baseURI": "http://igApp6.example.com:8081",
+  "capture": "all",
+  "condition": "${matches(request.uri.path, '^/home/not-enforced')}",
+  "handler": {
+    "type": "StaticResponseHandler",
+    "config": {
+      "status": 200,
+      "entity": "<html><body>Non Enforced area. Available for public access</body></html>"
+    }
+  }
+}

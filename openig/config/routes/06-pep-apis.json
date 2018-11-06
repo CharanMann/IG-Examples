@@ -16,7 +16,7 @@
             "file": "OpenAMBasicAuthFilter.groovy",
             "args": {
               "openamUrl": "${frConfigs.amUrl}",
-              "realm" : "${frConfigs.amRealm}"
+              "realm": "${frConfigs.amRealm}"
             }
           },
           "capture": "all"
@@ -57,7 +57,7 @@
             "openamUrl": "${frConfigs.amUrl}",
             "pepUsername": "${frConfigs.amPolicyAdminUid}",
             "pepPassword": "${frConfigs.amPolicyAdminPw}",
-            "pepRealm" : "${frConfigs.amRealm}",
+            "pepRealm": "${frConfigs.amRealm}",
             "realm": "${frConfigs.amRealm}",
             "application": "${frConfigs.amPolicyApp}",
             "ssoTokenSubject": "${attributes.tokenId}"

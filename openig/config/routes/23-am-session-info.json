@@ -1,0 +1,40 @@
+{
+  "name": "session-info",
+  "baseURI": "http://igApp6.example.com:8081",
+  "condition": "${matches(request.uri.path, '^/home/session-info')}",
+  "handler": {
+    "type": "Chain",
+    "config": {
+      "filters": [
+        {
+          "name": "SingleSignOnFilter",
+          "type": "SingleSignOnFilter",
+          "config": {
+            "amService": "AMService",
+            "loginEndpoint": "${frConfigs.amUrl}?realm=${frConfigs.amRealm}&service=LDAPTree&goto=${urlEncodeQueryParameterNameOrValue(contexts.router.originalUri)}"
+          }
+        },
+        {
+          "name": "SessionInfoFilter",
+          "type": "SessionInfoFilter",
+          "config": {
+            "amService": "AMService"
+          }
+        },
+        {
+          "name": "HeaderFilter",
+          "type": "HeaderFilter",
+          "config": {
+            "messageType": "REQUEST",
+            "add": {
+              "X-IG-SessionInfo": [
+                "username: ${contexts.amSession.username}, realm: ${contexts.amSession.realm}, properties: ${contexts.amSession.properties}"
+              ]
+            }
+          }
+        }
+      ],
+      "handler": "ReverseProxyHandler"
+    }
+  }
+}

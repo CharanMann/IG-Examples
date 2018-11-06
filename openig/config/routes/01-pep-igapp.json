@@ -1,7 +1,7 @@
 {
   "name": "01-pep-igApp",
   "baseURI": "http://igApp6.example.com:8081",
-  "condition": "${matches(request.uri.path, '^/home')}",
+  "condition": "${matches(request.uri.path, '^/home') and not contains(request.uri.path, 'not-enforced') and not contains(request.uri.path, 'session-info')}",
   "auditService": "JSONAuditService",
   "monitor": false,
   "capture": "all",
@@ -14,7 +14,7 @@
           "type": "SingleSignOnFilter",
           "config": {
             "amService": "AMService",
-            "loginEndpoint": "${frConfigs.amUrl}?realm=${frConfigs.amRealm}&service=protectedTree&goto=${urlEncodeQueryParameterNameOrValue(contexts.router.originalUri)}"
+            "loginEndpoint": "${frConfigs.amUrl}?realm=${frConfigs.amRealm}&goto=${urlEncodeQueryParameterNameOrValue(contexts.router.originalUri)}"
           },
           "capture": "all"
         },
@@ -27,7 +27,14 @@
             "pepRealm": "${frConfigs.amRealm}",
             "application": "${frConfigs.igSampleApp}",
             "ssoTokenSubject": "${contexts.ssoToken.value}",
-            "amService": "AMService"
+            "amService": "AMService",
+            "failureHandler": {
+              "type": "StaticResponseHandler",
+              "config": {
+                "status": 403,
+                "entity": "<html><body>Restricted area. You do not have sufficient privileges. <br><br>Contact your administrator</body></html>"
+              }
+            }
           },
           "capture": "all"
         },
@@ -76,7 +83,9 @@
           "config": {
             "messageType": "REQUEST",
             "add": {
-              "X-IG-SessionInfo": [ "username: ${contexts.amSession.username}, realm: ${contexts.amSession.realm}, AuthLevel: ${contexts.amSession.properties.AuthLevel}, maxSessionExpirationTime : ${contexts.amSession.maxSessionExpirationTime}" ]
+              "X-IG-SessionInfo": [
+                "username: ${contexts.amSession.username}, realm: ${contexts.amSession.realm}, AuthLevel: ${contexts.amSession.properties.AuthLevel}, maxSessionExpirationTime : ${contexts.amSession.maxSessionExpirationTime}"
+              ]
             }
           },
           "capture": "all"
