@@ -9,6 +9,17 @@
     "type": "Router",
     "audit": "global"
   },
+  "secrets": {
+    "stores": [
+      {
+        "type": "FileSystemSecretStore",
+        "config": {
+          "format": "BASE64",
+          "directory": "${openig.configDirectory}/secrets"
+        }
+      }
+    ]
+  },
   "heap": [
     {
       "name": "capture",
@@ -26,7 +37,14 @@
         "url": "${frConfigs.amUrl}",
         "realm": "${frConfigs.amRealm}",
         "ssoTokenHeader": "${frConfigs.ssoCookieName}",
-        "version": "6.0"
+        "agent": {
+          "username": "IG",
+          "passwordSecretId": "agent.secret.id"
+        },
+        "version": "6.5",
+        "notifications": {
+          "enabled": true
+        }
       }
     },
     {
