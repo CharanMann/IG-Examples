@@ -1,0 +1,40 @@
+{
+  "name": "01-cdsso-igapp",
+  "baseURI": "http://igApp651.example.com:8081",
+  "condition": "${matches(request.uri.path, '^/home/cdsso')}",
+  "monitor": false,
+  "handler": {
+    "type": "Chain",
+    "capture": "all",
+    "config": {
+      "filters": [
+        {
+          "name": "CrossDomainSingleSignOnFilter-1",
+          "type": "CrossDomainSingleSignOnFilter",
+          "config": {
+            "redirectEndpoint": "/home/cdsso/redirect",
+            "authCookie": {
+              "path": "/home",
+              "name": "ig-token-cookie"
+            },
+            "amService": "AMService"
+          }
+        },
+        {
+          "name": "UserProfileFilter-1",
+          "type": "UserProfileFilter",
+          "config": {
+            "username": "${contexts.ssoToken.info.uid}",
+            "userProfileService": {
+              "type": "UserProfileService",
+              "config": {
+                "amService": "AMService"
+              }
+            }
+          }
+        }
+      ],
+      "handler": "ReverseProxyHandler"
+    }
+  }
+}
