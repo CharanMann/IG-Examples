@@ -37,7 +37,7 @@
         "realm": "${frConfigs.amRealm}",
         "ssoTokenHeader": "${frConfigs.ssoCookieName}",
         "agent": {
-          "username": "IG",
+          "username": "${frConfigs.igAgentName}",
           "passwordSecretId": "agent.secret.id"
         },
         "version": "6.5",

@@ -1,6 +1,6 @@
 {
   "name": "01-pep-igApp",
-  "baseURI": "http://igApp6.example.com:8081",
+  "baseURI": "http://igApp651.example.com:8081",
   "condition": "${matches(request.uri.path, '^/home') and not contains(request.uri.path, 'not-enforced') and not contains(request.uri.path, 'session-info')}",
   "auditService": "JSONAuditService",
   "monitor": false,
@@ -22,10 +22,8 @@
           "name": "PolicyEnforcementFilter-1",
           "type": "PolicyEnforcementFilter",
           "config": {
-            "pepUsername": "${frConfigs.amPolicyAdminUid}",
-            "pepPassword": "${frConfigs.amPolicyAdminPw}",
             "pepRealm": "${frConfigs.amRealm}",
-            "application": "${frConfigs.igSampleApp}",
+            "application": "${frConfigs.amPolicyApp}",
             "ssoTokenSubject": "${contexts.ssoToken.value}",
             "amService": "AMService",
             "failureHandler": {

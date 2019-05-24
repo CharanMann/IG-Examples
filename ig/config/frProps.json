@@ -1,10 +1,8 @@
 {
-  "amUrl": "http://am6.example.com:8080/am",
+  "amUrl": "http://am651.example.com:8086/am",
   "amRealm": "employees",
-  "amPolicyAdminUid": "IG",
-  "amPolicyAdminPw": "password",
-  "amPolicyApp": "OpenIG",
-  "igSampleApp": "IGSampleApp",
+  "igAgentName": "IG",
+  "amPolicyApp": "IGSampleApp",
   "ssoCookieName": "iPlanetDirectoryPro",
   "igAuditDir": "audit"
 }
