@@ -1,0 +1,83 @@
+{
+  "name": "01-pep-dc-igApp",
+  "baseURI": "http://igApp651.example.com:8081",
+  "condition": "${matches(request.uri.path, '^/home')}",
+  "heap": [
+    {
+      "name": "ReverseProxyHandler",
+      "type": "ReverseProxyHandler"
+    },
+    {
+      "name": "DataCenterCookie",
+      "type": "ScriptableFilter",
+      "config": {
+        "type": "application/x-groovy",
+        "source": [
+          "def cookieValue = request.cookies['DataCenter']",
+          "logger.info(\"DataCenter Cookie: $cookieValue\")",
+          "return next.handle(context, request)"
+        ]
+      }
+    }
+  ],
+  "handler": {
+    "name": "DCCheck",
+    "type": "DispatchHandler",
+    "capture": "all",
+    "config": {
+      "bindings": [
+        {
+          "comment": "DC-A",
+          "name": "DC-A",
+          "condition": "${empty(request.cookies['DataCenter'][0]) or matches(request.cookies['DataCenter'][0].value, 'DC-A') }",
+          "capture": "all",
+          "handler": {
+            "name": "Chain-A",
+            "type": "Chain",
+            "capture": "all",
+            "config": {
+              "handler": "ReverseProxyHandler",
+              "filters": [
+                "DataCenterCookie",
+                {
+                  "name": "SSO-DC-A",
+                  "type": "SingleSignOnFilter",
+                  "config": {
+                    "amService": "AMService",
+                    "loginEndpoint": "${frConfigs.amUrl}?realm=${frConfigs.amRealm}&service=LDAPTree&goto=${urlEncodeQueryParameterNameOrValue(contexts.router.originalUri)}"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "DC-B",
+          "name": "DC-B",
+          "condition": "${matches(request.cookies['DataCenter'][0].value, 'DC-B')}",
+          "capture": "all",
+          "handler": {
+            "name": "Chain-B",
+            "type": "Chain",
+            "capture": "all",
+            "config": {
+              "handler": "ReverseProxyHandler",
+              "filters": [
+                "DataCenterCookie",
+                {
+                  "name": "SSO-DC-B",
+                  "type": "SingleSignOnFilter",
+                  "config": {
+                    "amService": "AMService",
+                    "loginEndpoint": "${frConfigs.amUrl}?realm=${frConfigs.amRealm}&service=LDAPTree&goto=${urlEncodeQueryParameterNameOrValue(contexts.router.originalUri)}"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  "capture": "all"
+}

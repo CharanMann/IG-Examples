@@ -55,6 +55,19 @@
           "capture": "all"
         },
         {
+          "name": "getCookieValue",
+          "type": "ScriptableFilter",
+          "config": {
+            "type": "application/x-groovy",
+            "source": [
+              "def cookieValue = request.cookies['DataCenter'].value",
+              "logger.info(\"cookieValue : $cookieValue\")",
+              "return next.handle(context, request)"
+            ]
+          },
+          "capture": "all"
+        },
+        {
           "name": "addPolicyResponseHeader",
           "type": "HeaderFilter",
           "config": {
