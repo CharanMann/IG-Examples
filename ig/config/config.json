@@ -47,13 +47,51 @@
       }
     },
     {
+      "name": "AMPrimaryService",
+      "type": "AmService",
+      "config": {
+        "amHandler": "FRClientHandler",
+        "url": "${frConfigs.amPrimaryUrl}",
+        "realm": "${frConfigs.amRealm}",
+        "ssoTokenHeader": "${frConfigs.ssoCookieName}",
+        "agent": {
+          "username": "${frConfigs.igAgentName}",
+          "passwordSecretId": "agent.secret.id"
+        },
+        "version": "6.5",
+        "notifications": {
+          "enabled": true
+        }
+      }
+    },
+    {
+      "name": "AMSecondaryService",
+      "type": "AmService",
+      "config": {
+        "amHandler": "FRClientHandler",
+        "url": "${frConfigs.amSecondaryUrl}",
+        "realm": "${frConfigs.amRealm}",
+        "ssoTokenHeader": "${frConfigs.ssoCookieName}",
+        "agent": {
+          "username": "${frConfigs.igAgentName}",
+          "passwordSecretId": "agent.secret.id"
+        },
+        "version": "6.5",
+        "notifications": {
+          "enabled": true
+        }
+      }
+    },
+    {
       "name": "XForwardedHeader",
       "type": "HeaderFilter",
       "comment": "Add a header to all requests",
       "config": {
         "messageType": "REQUEST",
         "add": {
-          "X-Forwarded-For": [ "${contexts.client.remoteAddress} " ]
+          "X-Forwarded-For": [
+            "${contexts.client.remoteAddress} "
+          ]
         }
       }
     },

@@ -14,6 +14,8 @@
         "type": "application/x-groovy",
         "source": [
           "def cookieValue = request.cookies['DataCenter']",
+          "logger.info(\"Primary DC: $frConfigs.primaryDC\")",
+          "logger.info(\"Secondary DC: $frConfigs.secondaryDC\")",
           "logger.info(\"DataCenter Cookie: $cookieValue\")",
           "return next.handle(context, request)"
         ]
@@ -27,12 +29,11 @@
     "config": {
       "bindings": [
         {
-          "comment": "DC-A",
-          "name": "DC-A",
-          "condition": "${empty(request.cookies['DataCenter'][0]) or matches(request.cookies['DataCenter'][0].value, 'DC-A') }",
+          "name": "primaryDC",
+          "condition": "${empty(request.cookies['DataCenter'][0]) or matches(request.cookies['DataCenter'][0].value, frConfigs.primaryDC) }",
           "capture": "all",
           "handler": {
-            "name": "Chain-A",
+            "name": "Chain-primaryDC",
             "type": "Chain",
             "capture": "all",
             "config": {
@@ -40,11 +41,11 @@
               "filters": [
                 "DataCenterCookie",
                 {
-                  "name": "SSO-DC-A",
+                  "name": "SSO-primaryDC",
                   "type": "SingleSignOnFilter",
                   "config": {
-                    "amService": "AMService",
-                    "loginEndpoint": "${frConfigs.amUrl}?realm=${frConfigs.amRealm}&service=LDAPTree&goto=${urlEncodeQueryParameterNameOrValue(contexts.router.originalUri)}"
+                    "amService": "AMPrimaryService",
+                    "loginEndpoint": "${frConfigs.amPrimaryUrl}?realm=${frConfigs.amRealm}&service=LDAPTree&goto=${urlEncodeQueryParameterNameOrValue(contexts.router.originalUri)}"
                   }
                 }
               ]
@@ -52,12 +53,11 @@
           }
         },
         {
-          "comment": "DC-B",
-          "name": "DC-B",
-          "condition": "${matches(request.cookies['DataCenter'][0].value, 'DC-B')}",
+          "name": "secondaryDC",
+          "condition": "${matches(request.cookies['DataCenter'][0].value, frConfigs.secondaryDC)}",
           "capture": "all",
           "handler": {
-            "name": "Chain-B",
+            "name": "Chain-secondaryDC",
             "type": "Chain",
             "capture": "all",
             "config": {
@@ -65,11 +65,11 @@
               "filters": [
                 "DataCenterCookie",
                 {
-                  "name": "SSO-DC-B",
+                  "name": "SSO-secondaryDC",
                   "type": "SingleSignOnFilter",
                   "config": {
-                    "amService": "AMService",
-                    "loginEndpoint": "${frConfigs.amUrl}?realm=${frConfigs.amRealm}&service=LDAPTree&goto=${urlEncodeQueryParameterNameOrValue(contexts.router.originalUri)}"
+                    "amService": "AMSecondaryService",
+                    "loginEndpoint": "${frConfigs.amSecondaryUrl}?realm=${frConfigs.amRealm}&service=LDAPTree&goto=${urlEncodeQueryParameterNameOrValue(contexts.router.originalUri)}"
                   }
                 }
               ]

@@ -4,11 +4,14 @@
   Use of this code requires a commercial software license with ForgeRock AS.
   or with one of its affiliates. All use shall be exclusively subject
   to such license between the licensee and ForgeRock AS.
---><configuration>
+-->
+<configuration>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%nopex[%thread] %highlight(%-5level) %boldWhite(%logger{35}) - %message%n%highlight(%rootException{short})</pattern>
+            <pattern>%nopex[%thread] %highlight(%-5level) %boldWhite(%logger{35}) -
+                %message%n%highlight(%rootException{short})
+            </pattern>
         </encoder>
     </appender>
 
