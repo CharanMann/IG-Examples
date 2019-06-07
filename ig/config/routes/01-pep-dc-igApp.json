@@ -20,6 +20,19 @@
           "return next.handle(context, request)"
         ]
       }
+    },
+    {
+      "name": "AddDCHeaders",
+      "type": "HeaderFilter",
+      "config": {
+        "messageType": "REQUEST",
+        "add": {
+          "DCInfo": [
+            "Primary DC: ${frConfigs.primaryDC}, Secondary DC: ${frConfigs.secondaryDC}"
+          ]
+        }
+      },
+      "capture": "all"
     }
   ],
   "handler": {
@@ -47,7 +60,8 @@
                     "amService": "AMPrimaryService",
                     "loginEndpoint": "${frConfigs.amPrimaryUrl}?realm=${frConfigs.amRealm}&service=LDAPTree&goto=${urlEncodeQueryParameterNameOrValue(contexts.router.originalUri)}"
                   }
-                }
+                },
+                "AddDCHeaders"
               ]
             }
           }
@@ -71,7 +85,8 @@
                     "amService": "AMSecondaryService",
                     "loginEndpoint": "${frConfigs.amSecondaryUrl}?realm=${frConfigs.amRealm}&service=LDAPTree&goto=${urlEncodeQueryParameterNameOrValue(contexts.router.originalUri)}"
                   }
-                }
+                },
+                "AddDCHeaders"
               ]
             }
           }
