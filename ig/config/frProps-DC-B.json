@@ -1,0 +1,11 @@
+{
+  "amPrimaryUrl": "http://frvma0.example.com:8080/am",
+  "amSecondaryUrl": "http://frvme0.example.com:8080/am",
+  "amRealm": "employees",
+  "igAgentName": "IG",
+  "amPolicyApp": "IGSampleApp",
+  "ssoCookieName": "iPlanetDirectoryPro",
+  "igAuditDir": "audit",
+  "primaryDC": "DC-B",
+  "secondaryDC": "DC-A"
+}
