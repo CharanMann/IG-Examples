@@ -13,7 +13,7 @@
           "type": "ScriptableFilter",
           "config": {
             "type": "application/x-groovy",
-            "file": "OpenAMBasicAuthFilter.groovy",
+            "file": "AMBasicAuthFilter.groovy",
             "args": {
               "openamUrl": "${frConfigs.amUrl}",
               "realm": "${frConfigs.amRealm}"

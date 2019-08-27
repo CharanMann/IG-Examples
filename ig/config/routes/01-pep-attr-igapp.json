@@ -1,0 +1,59 @@
+{
+  "name": "01-pep-attr-igApp",
+  "baseURI": "http://igApp651.example.com:8081",
+  "condition": "${matches(request.uri.path, '^/home')}",
+  "auditService": "JSONAuditService",
+  "monitor": false,
+  "capture": "all",
+  "handler": {
+    "type": "Chain",
+    "config": {
+      "filters": [
+        {
+          "name": "SingleSignOnFilter-1",
+          "type": "SingleSignOnFilter",
+          "config": {
+            "amService": "AMService",
+            "loginEndpoint": "${frConfigs.amUrl}?realm=${frConfigs.amRealm}&goto=${urlEncodeQueryParameterNameOrValue(contexts.router.originalUri)}"
+          },
+          "capture": "all"
+        },
+        {
+          "comment": "Scripted filter for retrieving user's attributes",
+          "name": "AM Attributes",
+          "type": "ScriptableFilter",
+          "config": {
+            "type": "application/x-groovy",
+            "file": "AMAttributes.groovy",
+            "args": {
+              "amUrl": "${frConfigs.amUrl}/json/${frConfigs.amRealm}",
+              "profileAttributes": [
+                "uid",
+                "mail"
+              ]
+            }
+          },
+          "capture": "all"
+        },
+        {
+          "name": "addUserAttributeHeader",
+          "type": "HeaderFilter",
+          "config": {
+            "messageType": "REQUEST",
+            "add": {
+              "User-ID": [
+                "${attributes.uid}"
+              ],
+              "User-Email": [
+                "${attributes.mail}"
+              ]
+            }
+          },
+          "capture": "all"
+        }
+      ],
+      "handler": "ReverseProxyHandler"
+    },
+    "capture": "all"
+  }
+}
