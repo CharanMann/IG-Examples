@@ -54,6 +54,7 @@ if (!(profileAttributes.empty)) {
                     }
                 }
 
+                attributesResponse.close()
                 // Call the next handler with the modified request
                 // That returns a new promise without blocking the current flow of execution
                 return next.handle(context, request)

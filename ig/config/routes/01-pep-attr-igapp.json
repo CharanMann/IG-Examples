@@ -5,6 +5,10 @@
   "auditService": "JSONAuditService",
   "monitor": false,
   "capture": "all",
+  "globalDecorators": {
+    "timer": true,
+    "capture": "all"
+  },
   "handler": {
     "type": "Chain",
     "config": {
@@ -15,8 +19,7 @@
           "config": {
             "amService": "AMService",
             "loginEndpoint": "${frConfigs.amUrl}?realm=${frConfigs.amRealm}&goto=${urlEncodeQueryParameterNameOrValue(contexts.router.originalUri)}"
-          },
-          "capture": "all"
+          }
         },
         {
           "comment": "Scripted filter for retrieving user's attributes",
@@ -32,8 +35,7 @@
                 "mail"
               ]
             }
-          },
-          "capture": "all"
+          }
         },
         {
           "name": "addUserAttributeHeader",
@@ -48,8 +50,7 @@
                 "${attributes.mail}"
               ]
             }
-          },
-          "capture": "all"
+          }
         }
       ],
       "handler": "ReverseProxyHandler"
