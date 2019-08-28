@@ -22,7 +22,7 @@
             "file": "AMAuthExtended.groovy",
             "args": {
               "amUrl": "${frConfigs.amUrl}",
-              "amAuthUrl": "${frConfigs.amUrl}?realm=${frConfigs.amRealm}&goto=${urlEncodeQueryParameterNameOrValue(contexts.router.originalUri.string)}",
+              "amAuthUrl": "${frConfigs.amUrl}?realm=${frConfigs.amRealm}",
               "profileAttributes": [
                 "uid",
                 "mail"

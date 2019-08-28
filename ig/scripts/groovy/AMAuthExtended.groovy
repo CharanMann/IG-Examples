@@ -67,7 +67,8 @@ def getRedirectResponse() {
     logger.info("Returning redirect to AM Login URL")
     Response redirectResponse = new Response(Status.FOUND)
     redirectResponse.entity.json = [code: 302, message: "Redirect to AM Login URL"];
-    redirectResponse.headers["Location"] = amAuthUrl
+    String redirectURI = "${amAuthUrl}&goto=${contexts.router.originalUri.string}"
+    redirectResponse.headers["Location"] = redirectURI
 
     // Need to wrap the response object in a promise
     return newResponsePromise(redirectResponse)
