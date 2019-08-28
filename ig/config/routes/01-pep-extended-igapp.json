@@ -1,0 +1,42 @@
+{
+  "name": "01-pep-extended-igApp",
+  "baseURI": "http://igApp651.example.com:8081",
+  "condition": "${matches(request.uri.path, '^/home')}",
+  "auditService": "JSONAuditService",
+  "monitor": false,
+  "capture": "all",
+  "globalDecorators": {
+    "timer": true,
+    "capture": "all"
+  },
+  "handler": {
+    "type": "Chain",
+    "config": {
+      "filters": [
+        {
+          "comment": "Scripted filter for AM Authentication redirect",
+          "name": "AM Authentication redirect (and Attributes retrieval)",
+          "type": "ScriptableFilter",
+          "config": {
+            "type": "application/x-groovy",
+            "file": "AMAuthExtended.groovy",
+            "args": {
+              "amUrl": "${frConfigs.amUrl}",
+              "amAuthUrl": "${frConfigs.amUrl}?realm=${frConfigs.amRealm}&goto=${urlEncodeQueryParameterNameOrValue(contexts.router.originalUri.string)}",
+              "profileAttributes": [
+                "uid",
+                "mail"
+              ],
+              "sessionAttributes": [
+                "am.protected.user.employeeNumber"
+              ]
+            }
+          },
+          "capture": "all"
+        }
+      ],
+      "handler": "ReverseProxyHandler"
+    },
+    "capture": "all"
+  }
+}
