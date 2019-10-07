@@ -14,7 +14,7 @@
           "type": "SingleSignOnFilter",
           "config": {
             "amService": "AMService",
-            "loginEndpoint": "${frConfigs.amUrl}?realm=${frConfigs.amRealm}&goto=${urlEncodeQueryParameterNameOrValue(contexts.router.originalUri)}"
+            "loginEndpoint": "${frConfigs.amUrl}?realm=${frConfigs.amAuthnRealm}&goto=${urlEncodeQueryParameterNameOrValue(contexts.router.originalUri)}"
           },
           "capture": "all"
         },
@@ -37,45 +37,17 @@
           "capture": "all"
         },
         {
-          "name": "getAttribute",
-          "type": "ScriptableFilter",
+          "name": "UserProfileFilter",
+          "type": "UserProfileFilter",
           "config": {
-            "type": "application/x-groovy",
-            "source": [
-              "def isMemberOf = contexts.policyDecision.attributes['isMemberOf']",
-              "logger.info(\"isMemberOf attribute value: $isMemberOf\")",
-              "if (isMemberOf != null) {",
-              " attributes.isMemberOf = isMemberOf[0]",
-              "  return next.handle(context, request)",
-              "} else {",
-              "  return next.handle(context, request)",
-              "}"
-            ]
-          },
-          "capture": "all"
-        },
-        {
-          "name": "getCookieValue",
-          "type": "ScriptableFilter",
-          "config": {
-            "type": "application/x-groovy",
-            "source": [
-              "def cookieValue = request.cookies['DataCenter'].value",
-              "logger.info(\"cookieValue : $cookieValue\")",
-              "return next.handle(context, request)"
-            ]
-          },
-          "capture": "all"
-        },
-        {
-          "name": "addPolicyResponseHeader",
-          "type": "HeaderFilter",
-          "config": {
-            "messageType": "REQUEST",
-            "add": {
-              "group": [
-                "${attributes.isMemberOf}"
-              ]
+            "username": "${contexts.ssoToken.info.uid}",
+            "userProfileService": {
+              "type": "UserProfileService",
+              "config": {
+                "amService": "AMService",
+                "profileAttributes": [ "employeeNumber", "mail" ],
+                "realm": "${frConfigs.amAuthnRealm}"
+              }
             }
           },
           "capture": "all"
@@ -89,13 +61,16 @@
           "capture": "all"
         },
         {
-          "name": "addSessionInfoHeaders",
+          "name": "addHeaders",
           "type": "HeaderFilter",
           "config": {
             "messageType": "REQUEST",
             "add": {
               "X-IG-SessionInfo": [
                 "username: ${contexts.amSession.username}, realm: ${contexts.amSession.realm}, AuthLevel: ${contexts.amSession.properties.AuthLevel}, maxSessionExpirationTime : ${contexts.amSession.maxSessionExpirationTime}"
+              ],
+              "X-IG-UserProfileInfo": [
+                "rawInfo: ${contexts.userProfile.rawInfo}"
               ]
             }
           },
