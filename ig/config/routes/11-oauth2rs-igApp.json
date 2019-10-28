@@ -1,0 +1,56 @@
+{
+  "baseURI": "http://igApp651.example.com:8081",
+  "condition": "${matches(request.uri.path, '^/rs-introspect')}",
+  "handler": {
+    "type": "Chain",
+    "config": {
+      "filters": [
+        {
+          "name": "OAuth2ResourceServerFilter",
+          "type": "OAuth2ResourceServerFilter",
+          "config": {
+            "scopes": [
+              "mail",
+              "uid"
+            ],
+            "requireHttps": false,
+            "realm": "OpenIG",
+            "accessTokenResolver": {
+              "name": "token-resolver-1",
+              "type": "TokenIntrospectionAccessTokenResolver",
+              "config": {
+                "endpoint": "http://am651.example.com:8086/am/oauth2/employees/introspect",
+                "providerHandler": {
+                  "type": "Chain",
+                  "config": {
+                    "filters": [
+                      {
+                        "type": "HeaderFilter",
+                        "config": {
+                          "messageType": "request",
+                          "add": {
+                            "Authorization": [
+                              "Basic ${encodeBase64('resource-server:password')}"
+                            ]
+                          }
+                        }
+                      }
+                    ],
+                    "handler": "FRClientHandler"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "handler": {
+        "type": "StaticResponseHandler",
+        "config": {
+          "status": 200,
+          "entity": "<html><body><h2>Decoded access_token: ${contexts.oauth2.accessToken.info}</h2></body></html>"
+        }
+      }
+    }
+  }
+}
