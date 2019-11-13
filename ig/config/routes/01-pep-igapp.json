@@ -48,12 +48,29 @@
               "type": "UserProfileService",
               "config": {
                 "amService": "AMService",
-                "profileAttributes": [ "employeeNumber", "mail" ],
+                "profileAttributes": [
+                  "employeeNumber",
+                  "mail"
+                ],
                 "realm": "${frConfigs.amAuthnRealm}"
               }
             }
           },
           "capture": "all"
+        },
+        {
+          "name": "JwtBuilderFilter",
+          "type": "JwtBuilderFilter",
+          "config": {
+            "template": {
+              "employeeNumber": "${contexts.userProfile.rawInfo.employeeNumber[0]}",
+              "email": "${contexts.userProfile.rawInfo.mail[0]}"
+            },
+            "signature": {
+              "secretId": "id.key.for.signing.jwt",
+              "algorithm": "HS512"
+            }
+          }
         },
         {
           "name": "SessionInfoFilter",
@@ -74,6 +91,9 @@
               ],
               "X-IG-UserProfileInfo": [
                 "rawInfo: ${contexts.userProfile.rawInfo}"
+              ],
+              "X-IG-JWT": [
+                "${contexts.jwtBuilder.value}"
               ]
             }
           },
