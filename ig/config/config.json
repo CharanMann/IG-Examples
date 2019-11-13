@@ -43,6 +43,9 @@
         "version": "6.5",
         "notifications": {
           "enabled": true
+        },
+        "sessionCache": {
+          "enabled": true
         }
       }
     },

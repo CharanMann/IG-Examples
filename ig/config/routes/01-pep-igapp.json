@@ -26,6 +26,9 @@
             "application": "${frConfigs.amPolicyApp}",
             "ssoTokenSubject": "${contexts.ssoToken.value}",
             "amService": "AMService",
+            "cache": {
+              "enabled": true
+            },
             "failureHandler": {
               "type": "StaticResponseHandler",
               "config": {
@@ -67,7 +70,7 @@
             "messageType": "REQUEST",
             "add": {
               "X-IG-SessionInfo": [
-                "username: ${contexts.amSession.username}, realm: ${contexts.amSession.realm}, AuthLevel: ${contexts.amSession.properties.AuthLevel}, maxSessionExpirationTime : ${contexts.amSession.maxSessionExpirationTime}"
+                "username: ${contexts.amSession.username}, realm: ${contexts.amSession.realm}, AuthLevel: ${contexts.amSession.properties.AuthLevel}, maxSessionExpirationTime : ${contexts.amSession.maxSessionExpirationTime}, maxIdleExpirationTime : ${contexts.amSession.maxIdleExpirationTime}, latestAccessTime : ${contexts.amSession.latestAccessTime} "
               ],
               "X-IG-UserProfileInfo": [
                 "rawInfo: ${contexts.userProfile.rawInfo}"
