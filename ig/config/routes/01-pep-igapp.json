@@ -26,9 +26,6 @@
             "application": "${frConfigs.amPolicyApp}",
             "ssoTokenSubject": "${contexts.ssoToken.value}",
             "amService": "AMService",
-            "cache": {
-              "enabled": true
-            },
             "failureHandler": {
               "type": "StaticResponseHandler",
               "config": {
