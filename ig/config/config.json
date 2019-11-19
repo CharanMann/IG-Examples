@@ -21,8 +21,8 @@
         "name": "secretsKeyStore",
         "type": "KeyStoreSecretStore",
         "config": {
-          "file": "${openig.configDirectory}/secrets/secrets.jceks",
-          "storeType": "JCEKS",
+          "file": "${openig.configDirectory}/secrets/secrets.pkcs12",
+          "storeType": "PKCS12",
           "storePassword": "keystore.secret.id",
           "keyEntryPassword": "keystore.secret.id",
           "mappings": [
