@@ -30,7 +30,7 @@ public class JWTVerifier {
 
     private static String HMAC_512_KEY = "F96C65B430BE65516085D9B36C5DA72DB99568EEE30C75BD1FEF5BF18A8C68F58F0C6A1FCD0E1645E76EA284CF75B61A9D487D8FC53B4C8F20D38E332FB7D2DD";
 
-    private static String SIGNED_JWT = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJlbWFpbCI6InVzZXIuNjY2QGV4YW1wbGUuY29tIiwiZW1wbG95ZWVOdW1iZXIiOiI2NjYifQ.PiGu7vSd8JKK9ImEB6dHmbycZ5OgFbjAmAehW12VVfVXjaTcKoU8U0fUqqAFvv9p-uS05xmpG-bGH21plpIZFA";
+    private static String SIGNED_JWT = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbm9yYSIsImlzcyI6IklHIiwiZXhwIjoxNTc1MzE5MjY5LCJpYXQiOjE1NzUzMTgwNjksImVtYWlsIjoiYW5vcmFAZXhhbXBsZS5jb20iLCJlbXBsb3llZU51bWJlciI6IjAifQ.dX1ZqDmo6dmTo8lmX9SBK2tzuioeJWyGBdNN2XhgGB6OYwPDleVE4YOyLNN4z-NJomujVuB-MY3QayMcm3rwlg";
 
     public static void main(String[] args) {
 
@@ -38,6 +38,9 @@ public class JWTVerifier {
         Claims claims = jwtVerifier.decodeJWT(SIGNED_JWT);
 
         System.out.println("Jwt Body: " + claims);
+        System.out.println("Jwt Subject: " + claims.getSubject());
+        System.out.println("Jwt IssuedAt: " + claims.getIssuedAt());
+        System.out.println("Jwt Expiration: " + claims.getExpiration());
     }
 
     public Claims decodeJWT(String jwt) {

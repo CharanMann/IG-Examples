@@ -56,10 +56,23 @@
           "capture": "all"
         },
         {
+          "name": "SessionInfoFilter",
+          "type": "SessionInfoFilter",
+          "config": {
+            "amService": "AMService"
+          },
+          "capture": "all"
+        },
+        {
           "name": "JwtBuilderFilter",
           "type": "JwtBuilderFilter",
           "config": {
             "template": {
+              "iss": "IG",
+              "sub": "${contexts.amSession.username}",
+              "iat": "${contexts.amSession.latestAccessTime.epochSecond}",
+              "exp": "${contexts.amSession.maxIdleExpirationTime.epochSecond}",
+              "authLevel": "${contexts.amSession.properties.AuthLevel}",
               "employeeNumber": "${contexts.userProfile.rawInfo.employeeNumber[0]}",
               "email": "${contexts.userProfile.rawInfo.mail[0]}"
             },
@@ -68,14 +81,6 @@
               "algorithm": "HS512"
             }
           }
-        },
-        {
-          "name": "SessionInfoFilter",
-          "type": "SessionInfoFilter",
-          "config": {
-            "amService": "AMService"
-          },
-          "capture": "all"
         },
         {
           "name": "addHeaders",

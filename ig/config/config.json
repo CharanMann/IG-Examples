@@ -63,7 +63,8 @@
           "enabled": true
         },
         "sessionCache": {
-          "enabled": true
+          "enabled": true,
+          "maximumTimeToCache": "5 minutes"
         }
       }
     },
