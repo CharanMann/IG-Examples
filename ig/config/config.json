@@ -39,6 +39,30 @@
   },
   "heap": [
     {
+      "name": "SecretsProvider-1",
+      "type": "SecretsProvider",
+      "config": {
+        "stores": [
+          {
+            "name": "KeyStoreSecretStore-1",
+            "type": "KeyStoreSecretStore",
+            "config": {
+              "file": "${openig.configDirectory}/secrets/IG_keystore.p12",
+              "storeType": "PKCS12",
+              "storePassword": "keystore.secret.id",
+              "keyEntryPassword": "keystore.secret.id",
+              "mappings": [
+                {
+                  "secretId": "stateless.access.token.verification.key",
+                  "aliases": [ "verification-key" ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
       "name": "capture",
       "type": "CaptureDecorator",
       "config": {
