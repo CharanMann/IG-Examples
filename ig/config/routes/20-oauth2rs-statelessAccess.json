@@ -1,0 +1,37 @@
+{
+  "name": "rs-stateless-signed",
+  "condition": "${matches(request.uri.path, '/rs-stateless-signed')}",
+  "handler": {
+    "type": "Chain",
+    "capture": "all",
+    "config": {
+      "filters": [
+        {
+          "name": "OAuth2ResourceServerFilter-1",
+          "type": "OAuth2ResourceServerFilter",
+          "config": {
+            "scopes": [
+              "mail"
+            ],
+            "requireHttps": false,
+            "accessTokenResolver": {
+              "type": "StatelessAccessTokenResolver",
+              "config": {
+                "secretsProvider": "SecretsProvider-1",
+                "issuer": "${frConfigs.amUrl}/oauth2/employees",
+                "verificationSecretId": "stateless.access.token.verification.key"
+              }
+            }
+          }
+        }
+      ],
+      "handler": {
+        "type": "StaticResponseHandler",
+        "config": {
+          "status": 200,
+          "entity": "<html><body><h2>Decoded access_token: ${contexts.oauth2.accessToken.info}</h2></body></html>"
+        }
+      }
+    }
+  }
+}

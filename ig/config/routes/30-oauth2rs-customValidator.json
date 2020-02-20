@@ -1,0 +1,54 @@
+{
+  "name": "rs-stateless-signed-custom",
+  "condition" : "${matches(request.uri.path, '/rs-stateless-signed')}",
+  "heap":[
+    {
+      "name": "customKeyStore",
+      "type": "KeyStoreSecretStore",
+      "config": {
+        "file": "${openig.configDirectory}/secrets/IG_keystore.p12",
+        "storeType": "PKCS12",
+        "storePassword": "keystore.secret.id",
+        "keyEntryPassword": "keystore.secret.id",
+        "mappings": [
+          {
+            "secretId": "stateless.custom.access.token.verification.key",
+            "aliases": [ "verification-key" ]
+          }
+        ]
+      }
+    }
+  ],
+  "handler" : {
+    "type" : "Chain",
+    "capture" : "all",
+    "config" : {
+      "filters" : [ {
+        "name" : "OAuth2ResourceServerFilter-1",
+        "type" : "OAuth2ResourceServerFilter",
+        "config" : {
+          "scopes" : [ "mail" ],
+          "requireHttps" : false,
+          "accessTokenResolver": {
+            "type": "ScriptableAccessTokenResolver",
+            "config": {
+              "type": "application/x-groovy",
+              "file": "JWTValidator.groovy",
+              "args": {
+                "secretsProvider": "${heap['customKeyStore']}",
+                "secretId": "stateless.custom.access.token.verification.key"
+              }
+            }
+          }
+        }
+      } ],
+      "handler": {
+        "type": "StaticResponseHandler",
+        "config": {
+          "status": 200,
+          "entity": "<html><body><h2>Decoded access_token: ${contexts.oauth2.accessToken.info}</h2></body></html>"
+        }
+      }
+    }
+  }
+}
