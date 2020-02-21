@@ -22,26 +22,41 @@
  * This script requires these arguments: secretsProvider, secretId
  */
 
-import org.forgerock.secrets.*
-import org.forgerock.secrets.keys.*
-import org.forgerock.openig.secrets.*
+import io.jsonwebtoken.Claims
+import io.jsonwebtoken.Jwts
+import org.forgerock.http.oauth2.AccessTokenInfo
+import org.forgerock.json.JsonValue
+import org.forgerock.openig.secrets.SecretsUtils
+import org.forgerock.secrets.Purpose
+import org.forgerock.secrets.keys.VerificationKey
 
-/**
- * Invoke delegate
- */
-def invokeDelegate() {
-    // Call delegate.
-    return delegate.resolve(context, token)
+import static org.forgerock.json.JsonValueFunctions.setOf
+import static org.forgerock.openig.tools.JwtUtil.SCOPE
+
+def asAccessTokenInfo(String token, Claims jwtClaims) {
+    long expirationTime = jwtClaims.getExpiration().getTime()
+    def json = JsonValue.json(jwtClaims)
+
+    new AccessTokenInfo(json, token, json.get(SCOPE).as(setOf(String.class)), expirationTime)
 }
 
 logger.info("Keystore from heap {}", secretsProvider)
 
-def sp = Purpose.purpose(secretId,  VerificationKey.class)
-def signingSecret = secretsProvider.getActive(sp).get();
-logger.info("Signing Key details {}", SecretsUtils.exportAsKey(signingSecret)) // gets back a java.security.Key
+def sp = Purpose.purpose(secretId, VerificationKey.class)
+VerificationKey verificationKey = secretsProvider.getActiveSecret(sp).get();
+logger.info("Verification Key details {}", SecretsUtils.exportAsKey(verificationKey))
+
+Claims jwtClaims = Jwts.parser()
+        .setSigningKey(verificationKey.getPublicKey().get())
+        .parseClaimsJws(token)
+        .getBody()
+
+logger.info("Signature verification passed")
+
+asAccessTokenInfo(token, jwtClaims)
 
 
-invokeDelegate()
+
 
 
 

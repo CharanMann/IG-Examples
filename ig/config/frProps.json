@@ -1,5 +1,5 @@
 {
-  "amUrl": "http://am651.example.com:8086/am",
+  "amUrl": "http://am6523.example.com:8102/am",
   "amRealm": "/",
   "amAuthnRealm": "employees",
   "igAgentName": "IG",
