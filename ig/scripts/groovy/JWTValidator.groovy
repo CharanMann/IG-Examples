@@ -35,17 +35,21 @@ import static org.forgerock.openig.tools.JwtUtil.SCOPE
 
 def asAccessTokenInfo(String token, Claims jwtClaims) {
     long expirationTime = jwtClaims.getExpiration().getTime()
+
+    // Convert claims to JSON
     def json = JsonValue.json(jwtClaims)
 
     new AccessTokenInfo(json, token, json.get(SCOPE).as(setOf(String.class)), expirationTime)
 }
 
+// Retrieve Key from secret provider
 logger.info("Keystore from heap {}", secretsProvider)
 
 def sp = Purpose.purpose(secretId, VerificationKey.class)
 VerificationKey verificationKey = secretsProvider.getActiveSecret(sp).get();
 logger.info("Verification Key details {}", SecretsUtils.exportAsKey(verificationKey))
 
+// Signature validation
 Claims jwtClaims = Jwts.parser()
         .setSigningKey(verificationKey.getPublicKey().get())
         .parseClaimsJws(token)
@@ -53,6 +57,7 @@ Claims jwtClaims = Jwts.parser()
 
 logger.info("Signature verification passed")
 
+// Return AccessTokenInfo
 asAccessTokenInfo(token, jwtClaims)
 
 
