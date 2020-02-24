@@ -22,23 +22,25 @@
  * This script requires these arguments: secretsProvider, secretId
  */
 
-import io.jsonwebtoken.Claims
-import io.jsonwebtoken.Jwts
+import org.forgerock.http.oauth2.AccessTokenException
 import org.forgerock.http.oauth2.AccessTokenInfo
-import org.forgerock.json.JsonValue
+import org.forgerock.json.jose.jws.SignedJwt
+import org.forgerock.json.jose.jws.SigningManager
+import org.forgerock.json.jose.jws.handlers.SigningHandler
+import org.forgerock.json.jose.jwt.JwtClaimsSet
 import org.forgerock.openig.secrets.SecretsUtils
+import org.forgerock.openig.tools.JwtUtil
 import org.forgerock.secrets.Purpose
 import org.forgerock.secrets.keys.VerificationKey
 
 import static org.forgerock.json.JsonValueFunctions.setOf
 import static org.forgerock.openig.tools.JwtUtil.SCOPE
 
-def asAccessTokenInfo(String token, Claims jwtClaims) {
-    long expirationTime = jwtClaims.getExpiration().getTime()
+def asAccessTokenInfo(String token, JwtClaimsSet jwtClaimsSet) {
+    long expirationTime = jwtClaimsSet.getExpirationTime().getTime()
 
     // Convert claims to JSON
-    def json = JsonValue.json(jwtClaims)
-
+    def json = jwtClaimsSet.toJsonValue()
     new AccessTokenInfo(json, token, json.get(SCOPE).as(setOf(String.class)), expirationTime)
 }
 
@@ -49,16 +51,29 @@ def sp = Purpose.purpose(secretId, VerificationKey.class)
 VerificationKey verificationKey = secretsProvider.getActiveSecret(sp).get();
 logger.info("Verification Key details {}", SecretsUtils.exportAsKey(verificationKey))
 
+SigningManager signingManager = new SigningManager()
+SigningHandler handler = signingManager.newVerificationHandler(SecretsUtils.exportAsKey(verificationKey))
+
 // Signature validation
-Claims jwtClaims = Jwts.parser()
-        .setSigningKey(verificationKey.getPublicKey().get())
-        .parseClaimsJws(token)
-        .getBody()
+SignedJwt jwt = JwtUtil.reconstructJwt(token, SignedJwt.class)
 
-logger.info("Signature verification passed")
+try {
+    if (jwt.verify(handler)) {
+        logger.info("Signature verification passed")
 
-// Return AccessTokenInfo
-asAccessTokenInfo(token, jwtClaims)
+        // Return AccessTokenInfo
+        asAccessTokenInfo(token, jwt.claimsSet)
+    } else {
+        throw new AccessTokenException("JWT content does not match signature")
+    }
+} catch (Exception e) {
+    throw new AccessTokenException("JWT content does not match signature")
+}
+
+
+
+
+
 
 
 
