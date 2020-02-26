@@ -67,7 +67,7 @@ try {
         throw new AccessTokenException("JWT content does not match signature")
     }
 } catch (Exception e) {
-    throw new AccessTokenException("JWT content does not match signature")
+    throw new AccessTokenException("Scripted resolver failed: ", e)
 }
 
 

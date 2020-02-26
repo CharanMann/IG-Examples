@@ -1,0 +1,66 @@
+{
+  "name": "rs-delegate",
+  "condition": "${matches(request.uri.path, '/rs-delegate')}",
+  "heap": [
+    {
+      "name": "StatelessAccessTokenResolver-1",
+      "type": "StatelessAccessTokenResolver",
+      "config": {
+        "secretsProvider": "SecretsProvider-1",
+        "issuer": "${frConfigs.amUrl}/oauth2/employees",
+        "verificationSecretId": "stateless.access.token.verification.key"
+      }
+    },
+    {
+      "name": "ScriptableAccessTokenResolver-1",
+      "type": "ScriptableAccessTokenResolver",
+      "config": {
+        "type": "application/x-groovy",
+        "file": "JWTValidatorResolver.groovy",
+        "args": {
+          "secretsProvider": "${heap['SecretsProvider-1']}",
+          "secretId": "stateless.access.token.verification.key"
+        }
+      }
+    },
+    {
+      "name": "DelegateAccessTokenResolver",
+      "type": "ScriptableAccessTokenResolver",
+      "config": {
+        "type": "application/x-groovy",
+        "file": "DelegateAccessTokenResolver.groovy",
+        "args": {
+          "statelessAccessTokenResolver": "${heap['StatelessAccessTokenResolver-1']}",
+          "scriptableAccessTokenResolver": "${heap['ScriptableAccessTokenResolver-1']}"
+        }
+      }
+    }
+  ],
+  "handler": {
+    "type": "Chain",
+    "capture": "all",
+    "config": {
+      "filters": [
+        {
+          "name": "OAuth2ResourceServerFilter-1",
+          "type": "OAuth2ResourceServerFilter",
+          "config": {
+            "scopes": [
+              "mail"
+            ],
+            "requireHttps": false,
+            "accessTokenResolver": "DelegateAccessTokenResolver"
+          },
+          "capture": "all"
+        }
+      ],
+      "handler": {
+        "type": "StaticResponseHandler",
+        "config": {
+          "status": 200,
+          "entity": "<html><body><h2>Decoded access_token: ${contexts.oauth2.accessToken.info}</h2></body></html>"
+        }
+      }
+    }
+  }
+}

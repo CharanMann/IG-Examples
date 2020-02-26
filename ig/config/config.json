@@ -54,7 +54,7 @@
               "mappings": [
                 {
                   "secretId": "stateless.access.token.verification.key",
-                  "aliases": [ "verification-key" ]
+                  "aliases": [ "test-key" ]
                 }
               ]
             }
