@@ -18,7 +18,7 @@
               "file": "JWTValidatorResolver.groovy",
               "args": {
                 "secretsProvider": "${heap['SecretsProvider-1']}",
-                "secretId": "stateless.access.token.verification.key"
+                "secretId": "stateless.access.token.test.key"
               }
             }
           }
