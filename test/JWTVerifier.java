@@ -46,9 +46,9 @@ public class JWTVerifier {
     public Claims decodeJWT(String jwt) {
 
         //This line will throw an exception if it is not a signed JWS (as expected)
-        return Jwts.parser()
+        return Jwts.parserBuilder()
                 .setSigningKey(DatatypeConverter.parseHexBinary(HMAC_512_KEY))
-                .parseClaimsJws(jwt).getBody();
+                .build().parseClaimsJws(jwt).getBody();
     }
 
 }

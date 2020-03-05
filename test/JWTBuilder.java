@@ -23,10 +23,7 @@ import java.io.FileInputStream;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.PrivateKey;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 public class JWTBuilder {
 
@@ -40,7 +37,7 @@ public class JWTBuilder {
         String alias = "test-key";
         Key key = keystore.getKey(alias, passwd);
 
-        System.out.println(generateJwtToken(((PrivateKey)key)));
+        System.out.println(generateJwtToken(((PrivateKey) key)));
     }
 
     public static String generateJwtToken(PrivateKey privateKey) {
@@ -52,7 +49,7 @@ public class JWTBuilder {
                 .claim("scope", new String[]{"uid", "mail"})
                 .setId("1223243434123421341")
                 // RS256 with privateKey
-                .signWith(SignatureAlgorithm.RS256, privateKey).compact();
+                .signWith(privateKey, SignatureAlgorithm.RS256).compact();
         return token;
     }
 
