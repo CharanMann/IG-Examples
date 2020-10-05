@@ -1,0 +1,108 @@
+{
+  "handler": {
+    "name": "_router",
+    "type": "Router"
+  },
+  "properties": {
+    "frConfigs": {
+      "$location": "${fileToUrl(openig.configDirectory)}/frProps.json"
+    }
+  },
+  "heap": [
+    {
+      "name": "FileSystemSecretStore-1",
+      "type": "FileSystemSecretStore",
+      "config": {
+        "format": "BASE64",
+        "directory": "${openig.configDirectory}/secrets"
+      }
+    },
+    {
+      "name": "capture",
+      "type": "CaptureDecorator",
+      "config": {
+        "captureEntity": false,
+        "captureContext": false
+      }
+    },
+    {
+      "name": "AMService",
+      "type": "AmService",
+      "config": {
+        "amHandler": "FRClientHandler",
+        "url": "${frConfigs.amUrl}",
+        "realm": "${frConfigs.amRealm}",
+        "ssoTokenHeader": "${frConfigs.ssoCookieName}",
+        "agent": {
+          "username": "${frConfigs.igAgentName}",
+          "passwordSecretId": "agent.secret.id"
+        },
+        "version": "6.5",
+        "notifications": {
+          "enabled": true
+        },
+        "secretsProvider": "FileSystemSecretStore-1",
+        "sessionCache": {
+          "enabled": true,
+          "maximumTimeToCache": "5 minutes"
+        }
+      }
+    },
+    {
+      "name": "XForwardedHeader",
+      "type": "HeaderFilter",
+      "comment": "Add a header to all requests",
+      "config": {
+        "messageType": "REQUEST",
+        "add": {
+          "X-Forwarded-For": [
+            "${contexts.client.remoteAddress} "
+          ]
+        }
+      }
+    },
+    {
+      "name": "FRClientHandler",
+      "type": "Chain",
+      "config": {
+        "filters": [
+          "TransactionIdOutboundFilter",
+          "XForwardedHeader"
+        ],
+        "handler": {
+          "type": "Delegate",
+          "config": {
+            "delegate": "SharedClientHandler"
+          },
+          "capture": "all"
+        }
+      }
+    },
+    {
+      "name": "SharedClientHandler",
+      "type": "ClientHandler",
+      "config": {
+        "numberOfWorkers": 2
+      }
+    },
+    {
+      "name": "JSONAuditService",
+      "type": "AuditService",
+      "config": {
+        "config": {},
+        "eventHandlers": [
+          {
+            "class": "org.forgerock.audit.handlers.json.JsonAuditEventHandler",
+            "config": {
+              "name": "json",
+              "logDirectory": "${openig.baseDirectory.path}/${frConfigs.igAuditDir}",
+              "topics": [
+                "access"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

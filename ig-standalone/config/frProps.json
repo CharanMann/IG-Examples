@@ -1,0 +1,9 @@
+{
+  "amUrl": "http://am653.example.com:8092/am",
+  "amRealm": "/employees",
+  "amAuthnRealm": "employees",
+  "igAgentName": "IG",
+  "amPolicyApp": "IGSampleApp",
+  "ssoCookieName": "iPlanetDirectoryPro",
+  "igAuditDir": "audit"
+}

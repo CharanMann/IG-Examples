@@ -1,0 +1,82 @@
+{
+  "name": "01-pep-igApp",
+  "baseURI": "http://igApp7.example.com:8081",
+  "condition": "${matches(request.uri.path, '^/home/sso$')}",
+  "auditService": "JSONAuditService",
+  "monitor": false,
+  "capture": "all",
+  "handler": {
+    "type": "Chain",
+    "config": {
+      "filters": [
+        {
+          "name": "SingleSignOnFilter-1",
+          "type": "SingleSignOnFilter",
+          "config": {
+            "amService": "AMService",
+            "loginEndpoint": "${frConfigs.amUrl}?realm=${frConfigs.amAuthnRealm}&goto=${urlEncodeQueryParameterNameOrValue(contexts.router.originalUri)}"
+          },
+          "capture": "all"
+        },
+        {
+          "name": "UserProfileFilter",
+          "type": "UserProfileFilter",
+          "config": {
+            "username": "${contexts.ssoToken.info.uid}",
+            "userProfileService": {
+              "type": "UserProfileService",
+              "config": {
+                "amService": "AMService",
+                "profileAttributes": [
+                  "employeeNumber",
+                  "mail"
+                ],
+                "realm": "${frConfigs.amAuthnRealm}"
+              }
+            }
+          },
+          "capture": "all"
+        },
+        {
+          "name": "JwtBuilderFilter-1",
+          "type": "JwtBuilderFilter",
+          "config": {
+            "template": {
+              "name": "${contexts.userProfile.commonName}",
+              "email": "${contexts.userProfile.rawInfo.mail[0]}"
+            }
+          }
+        },
+        {
+          "name": "SessionInfoFilter",
+          "type": "SessionInfoFilter",
+          "config": {
+            "amService": "AMService"
+          },
+          "capture": "all"
+        },
+        {
+          "name": "addHeaders",
+          "type": "HeaderFilter",
+          "config": {
+            "messageType": "REQUEST",
+            "add": {
+              "X-IG-SessionInfo": [
+                "username: ${contexts.amSession.username}, realm: ${contexts.amSession.realm}, AuthLevel: ${contexts.amSession.properties.AuthLevel}, maxSessionExpirationTime : ${contexts.amSession.maxSessionExpirationTime}, maxIdleExpirationTime : ${contexts.amSession.maxIdleExpirationTime}, latestAccessTime : ${contexts.amSession.latestAccessTime} "
+              ],
+              "X-IG-UserProfileInfo": [
+                "rawInfo: ${contexts.userProfile.rawInfo}"
+              ],
+              "X-IG-JWT": [
+                "${contexts.jwtBuilder.value}"
+              ]
+            }
+          },
+          "capture": "all"
+        }
+      ],
+      "handler": "ReverseProxyHandler"
+    },
+    "capture": "all"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "sampleapp_resources",
+  "baseURI": "http://igApp7.example.com:8081",
+  "condition": "${matches(request.uri.path,'^/css')}",
+  "handler": "ReverseProxyHandler"
+}
