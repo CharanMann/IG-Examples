@@ -33,7 +33,7 @@
     <name>IG-Examples</name>
 
     <properties>
-        <openig.version>6.5.2</openig.version>
+        <openig.version>7.0.0</openig.version>
         <commons.version>21.0.0</commons.version>
     </properties>
 

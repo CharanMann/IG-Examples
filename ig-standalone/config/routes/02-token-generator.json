@@ -1,0 +1,21 @@
+{
+  "name": "token-generator",
+  "condition": "${matches(request.uri.path,'^/tokenGen')}",
+  "capture": "all",
+  "handler": {
+    "name": "validToken",
+    "type": "StaticResponseHandler",
+    "config": {
+      "status": 200,
+      "headers": {
+        "Content-Type": [
+          "application/json"
+        ]
+      },
+      "entity": "{\n    \"access_token\": \"u7lSMXMjoyaG_lYs8rzwUN0jsAs\",\n    \"scope\": \"uid\",\n    \"token_type\": \"Bearer\",\n    \"expires_in\": 3599\n}"
+    },
+    "capture": "all"
+  }
+}
+
+

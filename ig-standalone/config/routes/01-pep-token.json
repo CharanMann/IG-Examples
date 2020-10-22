@@ -1,9 +1,7 @@
 {
   "name": "01-pep-igApp",
   "baseURI": "http://igApp7.example.com:8081",
-  "condition": "${matches(request.uri.path, '^/home/sso$')}",
-  "auditService": "JSONAuditService",
-  "monitor": false,
+  "condition": "${matches(request.uri.path, '^/home/pep-sso')}",
   "capture": "all",
   "handler": {
     "type": "Chain",
@@ -14,46 +12,40 @@
           "type": "SingleSignOnFilter",
           "config": {
             "amService": "AMService",
-            "loginEndpoint": "${frConfigs.amUrl}?realm=${frConfigs.amAuthnRealm}&goto=${urlEncodeQueryParameterNameOrValue(contexts.router.originalUri)}"
+            "realm": "${frConfigs.amAuthnRealm}"
           },
           "capture": "all"
         },
         {
-          "name": "UserProfileFilter",
-          "type": "UserProfileFilter",
+          "comment": "Scripted filter for custom token creation and validation",
+          "name": "TokenValidator",
+          "type": "ScriptableFilter",
           "config": {
-            "username": "${contexts.ssoToken.info.uid}",
-            "userProfileService": {
-              "type": "UserProfileService",
-              "config": {
-                "amService": "AMService",
-                "profileAttributes": [
-                  "employeeNumber",
-                  "mail"
-                ],
-                "realm": "${frConfigs.amAuthnRealm}"
-              }
+            "type": "application/x-groovy",
+            "file": "TokenValidator.groovy",
+            "args": {
+              "apiKey": "${frConfigs.apiKey}",
+              "tokenGenURL": "${frConfigs.tokenGenURL}"
             }
-          },
-          "capture": "all"
+          }
+        },
+        {
+          "name": "SessionInfoFilter-1",
+          "type": "SessionInfoFilter",
+          "config": {
+            "amService": "AMService"
+          }
         },
         {
           "name": "JwtBuilderFilter-1",
           "type": "JwtBuilderFilter",
           "config": {
             "template": {
-              "name": "${contexts.userProfile.commonName}",
-              "email": "${contexts.userProfile.rawInfo.mail[0]}"
+              "name": "${contexts.amSession.username}",
+              "realm": "${contexts.amSession.realm}",
+              "token": "${attributes.token}"
             }
           }
-        },
-        {
-          "name": "SessionInfoFilter",
-          "type": "SessionInfoFilter",
-          "config": {
-            "amService": "AMService"
-          },
-          "capture": "all"
         },
         {
           "name": "addHeaders",
@@ -63,9 +55,6 @@
             "add": {
               "X-IG-SessionInfo": [
                 "username: ${contexts.amSession.username}, realm: ${contexts.amSession.realm}, AuthLevel: ${contexts.amSession.properties.AuthLevel}, maxSessionExpirationTime : ${contexts.amSession.maxSessionExpirationTime}, maxIdleExpirationTime : ${contexts.amSession.maxIdleExpirationTime}, latestAccessTime : ${contexts.amSession.latestAccessTime} "
-              ],
-              "X-IG-UserProfileInfo": [
-                "rawInfo: ${contexts.userProfile.rawInfo}"
               ],
               "X-IG-JWT": [
                 "${contexts.jwtBuilder.value}"

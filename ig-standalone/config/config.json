@@ -22,7 +22,7 @@
       "type": "CaptureDecorator",
       "config": {
         "captureEntity": false,
-        "captureContext": false
+        "captureContext": true
       }
     },
     {
@@ -37,11 +37,11 @@
           "username": "${frConfigs.igAgentName}",
           "passwordSecretId": "agent.secret.id"
         },
-        "version": "6.5",
+        "secretsProvider": "FileSystemSecretStore-1",
+        "version": "7.0",
         "notifications": {
           "enabled": true
         },
-        "secretsProvider": "FileSystemSecretStore-1",
         "sessionCache": {
           "enabled": true,
           "maximumTimeToCache": "5 minutes"
@@ -83,25 +83,6 @@
       "type": "ClientHandler",
       "config": {
         "numberOfWorkers": 2
-      }
-    },
-    {
-      "name": "JSONAuditService",
-      "type": "AuditService",
-      "config": {
-        "config": {},
-        "eventHandlers": [
-          {
-            "class": "org.forgerock.audit.handlers.json.JsonAuditEventHandler",
-            "config": {
-              "name": "json",
-              "logDirectory": "${openig.baseDirectory.path}/${frConfigs.igAuditDir}",
-              "topics": [
-                "access"
-              ]
-            }
-          }
-        ]
       }
     }
   ]
