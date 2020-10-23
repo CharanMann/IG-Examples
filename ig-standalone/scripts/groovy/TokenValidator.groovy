@@ -58,9 +58,10 @@ return http.send(context, tokenGenerator)
             if (token) {
                 logger.info("Adding token in attributes for the next filter")
 
-                // Adding token in attributes for the next filter
+                // Adding token in attributes for JWT filter
                 attributes.token = token
 
+                // Adding token in query parameter also
                 logger.info("Adding token in query param")
                 Form form = new Form()
                 form.add("token", token)
