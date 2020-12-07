@@ -1,0 +1,28 @@
+{
+  "baseURI": "https://openam-inspirus-dev.id.forgerock.io",
+  "capture": "all",
+  "condition": "${contains(request.uri.path, '/')}",
+  "handler": {
+    "type": "Chain",
+    "config": {
+      "filters": [
+        {
+          "name": "hostHeader",
+          "type": "HeaderFilter",
+          "config": {
+            "messageType": "REQUEST",
+            "remove": [ "host" ],
+            "add": {
+              "host": [
+                "openam-inspirus-dev.id.forgerock.io"
+              ]
+            }
+          },
+          "capture": "all"
+        }
+      ],
+      "handler": "ReverseProxyHandler"
+    },
+    "capture": "all"
+  }
+}
