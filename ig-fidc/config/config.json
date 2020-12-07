@@ -59,7 +59,7 @@
       "name": "SharedClientHandler",
       "type": "ClientHandler",
       "config": {
-        "numberOfWorkers": 2
+        "protocolVersion": "HTTP/1.1"
       }
     }
   ]

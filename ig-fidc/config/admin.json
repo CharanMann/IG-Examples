@@ -4,7 +4,7 @@
       "port": 9090
     },
     {
-      "port": 9091,
+      "port": 9093,
       "tls": "ServerTlsOptions-1"
     }
   ],
@@ -40,7 +40,9 @@
         "mappings": [
           {
             "secretId": "key.manager.secret.id",
-            "aliases": ["https-connector-key"]
+            "aliases": [
+              "https-connector-key"
+            ]
           }
         ]
       }

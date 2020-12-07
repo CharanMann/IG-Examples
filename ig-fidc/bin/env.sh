@@ -1,1 +1,1 @@
-export IG_KEYSTORE_DIRECTORY='/home/ec2-user/forgerock/ig1/config/secrets'
+export IG_KEYSTORE_DIRECTORY='/home/ec2-user/forgerock/ig-fidc/config/secrets'

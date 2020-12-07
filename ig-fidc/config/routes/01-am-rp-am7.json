@@ -1,7 +1,7 @@
 {
   "baseURI": "http://am7.example.com:8086",
   "capture": "all",
-  "condition": "${contains(request.uri.path, '/am')}",
+  "condition": "${contains(request.uri.path, '/')}",
   "handler": {
     "type": "Chain",
     "config": {
@@ -21,7 +21,7 @@
           "capture": "all"
         }
       ],
-      "handler": "ReverseProxyHandler"
+      "handler": "FRClientHandler"
     },
     "capture": "all"
   }
