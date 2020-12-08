@@ -1,7 +1,7 @@
 {
   "baseURI": "https://openam-inspirus-dev.id.forgerock.io",
   "capture": "all",
-  "condition": "${contains(request.uri.path, '/')}",
+  "condition": "${matches(request.uri.path,'^/am')}",
   "handler": {
     "type": "Chain",
     "config": {
@@ -17,12 +17,10 @@
                 "openam-inspirus-dev.id.forgerock.io"
               ]
             }
-          },
-          "capture": "all"
+          }
         }
       ],
       "handler": "FRClientHandler"
-    },
-    "capture": "all"
+    }
   }
 }

@@ -1,0 +1,47 @@
+{
+  "baseURI": "https://openam-inspirus-dev.id.forgerock.io",
+  "capture": "all",
+  "condition": "${matches(request.uri.path,'^/13')}",
+  "handler": {
+    "type": "Chain",
+    "config": {
+      "filters": [
+        {
+          "name": "hostHeader",
+          "type": "HeaderFilter",
+          "config": {
+            "messageType": "REQUEST",
+            "remove": [ "host" ],
+            "add": {
+              "host": [
+                "openam-inspirus-dev.id.forgerock.io"
+              ]
+            }
+          }
+        },
+        {
+          "type": "UriPathRewriteFilter",
+          "config": {
+            "mappings": {
+              "/13/Consumer/metaAlias/tenant1/sp": "/am/Consumer/metaAlias/bravo/tenant1",
+              "/13/Consumer/metaAlias/tenant2/sp": "/am/Consumer/metaAlias/bravo/tenant2"
+            },
+            "failureHandler": {
+              "type": "StaticResponseHandler",
+              "config": {
+                "status": 500,
+                "headers": {
+                  "Content-Type": [
+                    "text/plain"
+                  ]
+                },
+                "entity": "Invalid SAML endpoint"
+              }
+            }
+          }
+        }
+      ],
+      "handler": "FRClientHandler"
+    }
+  }
+}
