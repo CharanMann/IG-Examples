@@ -1,7 +1,9 @@
 {
+  "globalDecorators": {
+    "capture": "all"
+  },
   "baseURI": "http://am7.example.com:8086",
-  "capture": "all",
-  "condition": "${contains(request.uri.path, '/')}",
+  "condition": "${contains(request.uri.path, '/am')}",
   "handler": {
     "type": "Chain",
     "config": {
@@ -11,18 +13,18 @@
           "type": "HeaderFilter",
           "config": {
             "messageType": "REQUEST",
-            "remove": [ "host" ],
+            "remove": [
+              "host"
+            ],
             "add": {
               "host": [
                 "am7.example.com:8086"
               ]
             }
-          },
-          "capture": "all"
+          }
         }
       ],
       "handler": "FRClientHandler"
-    },
-    "capture": "all"
+    }
   }
 }

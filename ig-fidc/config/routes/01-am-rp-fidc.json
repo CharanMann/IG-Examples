@@ -1,6 +1,8 @@
 {
+  "globalDecorators": {
+    "capture": "all"
+  },
   "baseURI": "https://openam-inspirus-dev.id.forgerock.io",
-  "capture": "all",
   "condition": "${matches(request.uri.path,'^/am')}",
   "handler": {
     "type": "Chain",
@@ -11,7 +13,9 @@
           "type": "HeaderFilter",
           "config": {
             "messageType": "REQUEST",
-            "remove": [ "host" ],
+            "remove": [
+              "host"
+            ],
             "add": {
               "host": [
                 "openam-inspirus-dev.id.forgerock.io"
