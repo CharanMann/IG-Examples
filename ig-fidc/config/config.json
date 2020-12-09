@@ -57,7 +57,11 @@
     },
     {
       "name": "SharedClientHandler",
-      "type": "ClientHandler",
+      "type": "ClientHandler"
+    },
+    {
+      "name": "SharedReverseProxyHandler",
+      "type": "ReverseProxyHandler",
       "config": {
         "protocolVersion": "HTTP/1.1"
       }
