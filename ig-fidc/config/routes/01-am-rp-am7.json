@@ -2,6 +2,7 @@
   "globalDecorators": {
     "capture": "all"
   },
+  "auditService": "JSONAuditService",
   "baseURI": "http://am7.example.com:8086",
   "condition": "${contains(request.uri.path, '/am')}",
   "handler": {
@@ -24,7 +25,7 @@
           }
         }
       ],
-      "handler": "SharedReverseProxyHandler"
+      "handler": "FRClientHandler"
     }
   }
 }

@@ -24,7 +24,7 @@
           }
         }
       ],
-      "handler": "SharedReverseProxyHandler"
+      "handler": "FRClientHandler"
     }
   }
 }

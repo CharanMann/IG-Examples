@@ -57,13 +57,39 @@
     },
     {
       "name": "SharedClientHandler",
-      "type": "ClientHandler"
+      "type": "ClientHandler",
+      "config": {
+        "protocolVersion": "HTTP/1.1"
+      }
     },
     {
       "name": "SharedReverseProxyHandler",
       "type": "ReverseProxyHandler",
       "config": {
         "protocolVersion": "HTTP/1.1"
+      }
+    },
+    {
+      "name": "JSONAuditService",
+      "type": "AuditService",
+      "config": {
+        "eventHandlers": [
+          {
+            "class": "org.forgerock.audit.handlers.json.JsonAuditEventHandler",
+            "config": {
+              "name": "json",
+              "logDirectory": "${openig.baseDirectory.path}/${frConfigs.igAuditDir}",
+              "topics": [
+                "access"
+              ],
+              "buffering": {
+                "maxSize": 100000,
+                "writeInterval": "100 ms"
+              },
+              "rotationRetentionCheckInterval": "1 m"
+            }
+          }
+        ]
       }
     }
   ]
