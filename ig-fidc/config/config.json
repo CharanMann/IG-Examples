@@ -39,7 +39,7 @@
       }
     },
     {
-      "name": "FRClientHandler",
+      "name": "FIDCClientHandler",
       "type": "Chain",
       "config": {
         "filters": [
@@ -58,13 +58,6 @@
     {
       "name": "SharedClientHandler",
       "type": "ClientHandler",
-      "config": {
-        "protocolVersion": "HTTP/1.1"
-      }
-    },
-    {
-      "name": "SharedReverseProxyHandler",
-      "type": "ReverseProxyHandler",
       "config": {
         "protocolVersion": "HTTP/1.1"
       }
