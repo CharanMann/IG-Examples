@@ -29,7 +29,6 @@
       "name": "AMService",
       "type": "AmService",
       "config": {
-        "amHandler": "FRClientHandler",
         "url": "${frConfigs.amUrl}",
         "realm": "${frConfigs.amRealm}",
         "ssoTokenHeader": "${frConfigs.ssoCookieName}",
@@ -38,51 +37,7 @@
           "passwordSecretId": "agent.secret.id"
         },
         "secretsProvider": "FileSystemSecretStore-1",
-        "version": "7.0",
-        "notifications": {
-          "enabled": true
-        },
-        "sessionCache": {
-          "enabled": true,
-          "maximumTimeToCache": "5 minutes"
-        }
-      }
-    },
-    {
-      "name": "XForwardedHeader",
-      "type": "HeaderFilter",
-      "comment": "Add a header to all requests",
-      "config": {
-        "messageType": "REQUEST",
-        "add": {
-          "X-Forwarded-For": [
-            "${contexts.client.remoteAddress} "
-          ]
-        }
-      }
-    },
-    {
-      "name": "FRClientHandler",
-      "type": "Chain",
-      "config": {
-        "filters": [
-          "TransactionIdOutboundFilter",
-          "XForwardedHeader"
-        ],
-        "handler": {
-          "type": "Delegate",
-          "config": {
-            "delegate": "SharedClientHandler"
-          },
-          "capture": "all"
-        }
-      }
-    },
-    {
-      "name": "SharedClientHandler",
-      "type": "ClientHandler",
-      "config": {
-        "numberOfWorkers": 2
+        "version": "7"
       }
     }
   ]

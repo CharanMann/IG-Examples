@@ -3,7 +3,7 @@
     "capture": "all"
   },
   "baseURI": "https://openam-inspirus-dev.id.forgerock.io",
-  "condition": "${matches(request.uri.path,'^/13')}",
+  "condition": "${matches(request.uri.path,'^/13/Consumer/metaAlias')}",
   "handler": {
     "type": "Chain",
     "config": {

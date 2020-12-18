@@ -1,8 +1,8 @@
 {
   "amUrl": "http://am7.example.com:8086/am",
-  "amRealm": "/",
+  "amRealm": "/customers",
   "amAuthnRealm": "customers",
-  "igAgentName": "IG7",
+  "igAgentName": "ig_agent",
   "ssoCookieName": "iPlanetDirectoryPro",
   "igAuditDir": "audit",
   "tokenGenURL": "http://tokenGenerator.example.com:9090/tokenGen",
