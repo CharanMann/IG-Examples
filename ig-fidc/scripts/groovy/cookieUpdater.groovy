@@ -34,7 +34,7 @@ next.handle(context, request).thenOnResult({ Response resp ->
     for (cookie in resCookies) {
         if (cookie.name == cookieName) {
             // If matching cookie is found, then update the domain
-            logger.info("Matching SSO cookie ${cookie} found, changing domain to ${domain}" )
+            logger.info("Matching SSO cookie ${cookie} found, changing domain to ${domain}")
             cookie.setDomain(domain)
 
             // Update the cookie headers

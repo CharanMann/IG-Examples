@@ -2,7 +2,7 @@
   "globalDecorators": {
     "capture": "all"
   },
-  "baseURI": "https://openam-inspirus-dev.id.forgerock.io",
+  "baseURI": "https://openam-tenantName-dev.id.forgerock.io",
   "condition": "${matches(request.uri.path,'^/13/Consumer/metaAlias')}",
   "handler": {
     "type": "Chain",
@@ -18,7 +18,7 @@
             ],
             "add": {
               "host": [
-                "openam-inspirus-dev.id.forgerock.io"
+                "openam-tenantName-dev.id.forgerock.io"
               ]
             }
           }
@@ -31,7 +31,7 @@
             "file": "cookieUpdater.groovy",
             "args": {
               "cookieName": "e9171d29641abed",
-              "domain": ".inspirus365.com"
+              "domain": ".tenantName.com"
             }
           }
         },
