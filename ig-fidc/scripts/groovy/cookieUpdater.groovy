@@ -39,6 +39,7 @@ next.handle(context, request).thenOnResult({ Response resp ->
 
             // Update the cookie headers
             resp.headers['Set-Cookie'] = new SetCookieHeader(resCookies)
+            break
         }
     }
 })

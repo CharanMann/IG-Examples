@@ -24,14 +24,12 @@
           }
         },
         {
-          "name": "cookieUpdater",
-          "type": "ScriptableFilter",
+          "type": "SetCookieUpdateFilter",
           "config": {
-            "type": "application/x-groovy",
-            "file": "cookieUpdater.groovy",
-            "args": {
-              "cookieName": "e9171d29641abed",
-              "domain": ".tenantName.com"
+            "cookies": {
+              "e9171d29641abed": {
+                "domain": ".tenantName.com"
+              }
             }
           }
         },
