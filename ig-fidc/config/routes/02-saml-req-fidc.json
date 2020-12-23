@@ -17,8 +17,10 @@
             "file": "queryRewriteFilter.groovy",
             "args": {
               "mappings": {
-                "metaAlias=/tenant1/sp": "metaAlias=/bravo/tenant1",
-                "metaAlias=/tenant2/sp": "metaAlias=/bravo/tenant2"
+                "metaAlias": {
+                  "/tenant1/sp": "/bravo/tenant1",
+                  "/tenant2/sp": "/bravo/tenant2"
+                }
               }
             }
           }

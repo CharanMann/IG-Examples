@@ -1,3 +1,5 @@
+import org.forgerock.http.protocol.Form
+
 /*
  * Copyright © 2020 ForgeRock, AS.
  *
@@ -21,20 +23,39 @@
  *
  * This script requires this argument: mappings (a map of key:value pairs where key is original value and value is replacement value)
  */
-def params = request.uri.query
+def queryParams = request.uri.query
 logger.info("Original request uri: ${request.uri}")
 
-mappings.each { key, value ->
-    // Replace if key is present in query params
-    if (params.indexOf(key) != -1) {
-        logger.info("Replacing query param: ${key} with ${value}")
-        params = params.replace(key, value)
-    }
-}
-logger.info("Updated query params: ${params}")
+// If query params are not null
+if (queryParams && mappings) {
+    Form form = new Form()
+    def queryMap = form.fromFormString(queryParams)
+    queryMap.each { paramName, paramValues ->
+        def rewriteParamMap = mappings[paramName]
 
-request.uri.query = params
-logger.info("Updated request uri: ${request.uri}")
+        // Proceed only if the replacement map is present
+        if (rewriteParamMap) {
+
+            paramValues.each{paramValue->
+                String rewriteParamValue = rewriteParamMap[paramValue]
+
+                // Proceed only if the replacement param value is present
+                if (rewriteParamValue) {
+                    logger.info("Replacing query param: ${paramName} with ${rewriteParamValue}")
+
+                    // Remove old value and add new value to param list
+                    paramValues.remove(paramValue)
+                    paramValues << rewriteParamValue
+                }
+            }
+
+        }
+    }
+    logger.info("Updated query params: ${queryMap}")
+
+    request.uri.query = form.toQueryString()
+    logger.info("Updated request uri: ${request.uri}")
+}
 
 // Invoke the next handler
 return next.handle(context, request)
