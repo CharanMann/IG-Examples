@@ -21,22 +21,24 @@ import org.forgerock.http.protocol.Form
 /*
  * Rewrites the query params
  *
- * This script requires this argument: mappings (a map of key:value pairs where key is original value and value is replacement value)
+ * This script requires this argument: mappings (a map of key:value pairs where key is param key and value is a map of replacements).
+ *
  */
 def queryParams = request.uri.query
 logger.info("Original request uri: ${request.uri}")
 
-// If query params are not null
+// If query params and mappings are not null
 if (queryParams && mappings) {
     Form form = new Form()
-    def queryMap = form.fromFormString(queryParams)
-    queryMap.each { paramName, paramValues ->
+    form.fromFormString(queryParams)
+
+    form.each { paramName, paramValues ->
         def rewriteParamMap = mappings[paramName]
 
         // Proceed only if the replacement map is present
         if (rewriteParamMap) {
 
-            paramValues.each{paramValue->
+            paramValues.each { paramValue ->
                 String rewriteParamValue = rewriteParamMap[paramValue]
 
                 // Proceed only if the replacement param value is present
@@ -51,7 +53,7 @@ if (queryParams && mappings) {
 
         }
     }
-    logger.info("Updated query params: ${queryMap}")
+    logger.info("Updated query params: ${form}")
 
     request.uri.query = form.toQueryString()
     logger.info("Updated request uri: ${request.uri}")
