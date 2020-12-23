@@ -21,7 +21,13 @@ import org.forgerock.http.protocol.Form
 /*
  * Rewrites the query params
  *
- * This script requires this argument: mappings (a map of key:value pairs where key is param key and value is a map of replacements).
+ * This script requires this argument: mappings (a rewrite map of key:value pairs where key is parameter name and value is a map of replacements).
+ *         "mappings": {
+ *               "metaAlias": {
+ *                  "/tenant1/sp": "/bravo/tenant1",
+ *                  "/tenant2/sp": "/bravo/tenant2"
+ *                }
+ *              }
  *
  */
 def queryParams = request.uri.query
@@ -35,13 +41,13 @@ if (queryParams && mappings) {
     form.each { paramName, paramValues ->
         def rewriteParamMap = mappings[paramName]
 
-        // Proceed only if the replacement map is present
+        // Proceed only if the replacement map is present for this parameter, such as {"/tenant1/sp": "/bravo/tenant1"}
         if (rewriteParamMap) {
 
             paramValues.each { paramValue ->
                 String rewriteParamValue = rewriteParamMap[paramValue]
 
-                // Proceed only if the replacement param value is present
+                // Proceed only if the replacement param value is present, such as "/bravo/tenant1"
                 if (rewriteParamValue) {
                     logger.info("Replacing query param: ${paramName} with ${rewriteParamValue}")
 
