@@ -1,8 +1,10 @@
 {
-  "amUrl": "http://am7.example.com:8086/am",
+  "amUrl": "https://openam-tenantName-dev.id.forgerock.io",
+  "amHost": "openam-tenantName-dev.id.forgerock.io",
   "amRealm": "/",
   "amAuthnRealm": "customers",
   "igAgentName": "IG7",
-  "ssoCookieName": "iPlanetDirectoryPro",
-  "igAuditDir": "audit"
+  "ssoCookieName": "e9171d29641abed",
+  "igAuditDir": "audit",
+  "cookieDomain": ".tenantName.com"
 }

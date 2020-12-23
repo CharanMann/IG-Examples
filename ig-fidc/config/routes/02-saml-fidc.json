@@ -2,7 +2,7 @@
   "globalDecorators": {
     "capture": "all"
   },
-  "baseURI": "https://openam-tenantName-dev.id.forgerock.io",
+  "baseURI": "${frConfigs.amUrl}",
   "condition": "${matches(request.uri.path,'^/13/Consumer/metaAlias')}",
   "handler": {
     "type": "Chain",
@@ -18,7 +18,7 @@
             ],
             "add": {
               "host": [
-                "openam-tenantName-dev.id.forgerock.io"
+                "${frConfigs.amHost}"
               ]
             }
           }
@@ -28,7 +28,7 @@
           "config": {
             "cookies": {
               "e9171d29641abed": {
-                "domain": ".tenantName.com"
+                "domain": "${frConfigs.cookieDomain}"
               }
             }
           }

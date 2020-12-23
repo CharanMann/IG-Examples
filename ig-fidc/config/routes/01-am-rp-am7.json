@@ -3,7 +3,7 @@
     "capture": "all"
   },
   "auditService": "JSONAuditService",
-  "baseURI": "http://am7.example.com:8086",
+  "baseURI": "${frConfigs.amUrl}",
   "condition": "${contains(request.uri.path, '/am')}",
   "handler": {
     "type": "Chain",
@@ -19,7 +19,7 @@
             ],
             "add": {
               "host": [
-                "am7.example.com:8086"
+                "${frConfigs.amHost}"
               ]
             }
           }

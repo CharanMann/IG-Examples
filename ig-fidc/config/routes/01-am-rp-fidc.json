@@ -2,7 +2,7 @@
   "globalDecorators": {
     "capture": "all"
   },
-  "baseURI": "https://openam-tenantName-dev.id.forgerock.io",
+  "baseURI": "${frConfigs.amUrl}",
   "condition": "${matches(request.uri.path,'^/am')}",
   "handler": {
     "type": "Chain",
@@ -18,7 +18,7 @@
             ],
             "add": {
               "host": [
-                "openam-tenantName-dev.id.forgerock.io"
+                "${frConfigs.amHost}"
               ]
             }
           }
