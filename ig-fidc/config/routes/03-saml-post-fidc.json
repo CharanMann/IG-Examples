@@ -8,21 +8,7 @@
     "type": "Chain",
     "config": {
       "filters": [
-        {
-          "name": "hostHeader",
-          "type": "HeaderFilter",
-          "config": {
-            "messageType": "REQUEST",
-            "remove": [
-              "host"
-            ],
-            "add": {
-              "host": [
-                "${frConfigs.amHost}"
-              ]
-            }
-          }
-        },
+        "hostHeader",
         {
           "type": "SetCookieUpdateFilter",
           "config": {
@@ -49,7 +35,7 @@
                     "text/plain"
                   ]
                 },
-                "entity": "Invalid SAML endpoint"
+                "entity": "Invalid SAML post endpoint"
               }
             }
           }

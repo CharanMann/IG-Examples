@@ -1,0 +1,50 @@
+{
+  "globalDecorators": {
+    "capture": "all"
+  },
+  "baseURI": "${frConfigs.amUrl}",
+  "condition": "${matches(request.uri.path,'^/13/spssoinit')}",
+  "handler": {
+    "type": "Chain",
+    "config": {
+      "filters": [
+        "hostHeader",
+        {
+          "name": "QueryRewriteFilter",
+          "type": "ScriptableFilter",
+          "config": {
+            "type": "application/x-groovy",
+            "file": "queryRewriteFilter.groovy",
+            "args": {
+              "mappings": {
+                "metaAlias=/tenant1/sp": "metaAlias=/bravo/tenant1",
+                "metaAlias=/tenant2/sp": "metaAlias=/bravo/tenant2"
+              }
+            }
+          }
+        },
+        {
+          "type": "UriPathRewriteFilter",
+          "config": {
+            "mappings": {
+              "/13/spssoinit": "/am/spssoinit"
+            },
+            "failureHandler": {
+              "type": "StaticResponseHandler",
+              "config": {
+                "status": 500,
+                "headers": {
+                  "Content-Type": [
+                    "text/plain"
+                  ]
+                },
+                "entity": "Invalid SAML request endpoint"
+              }
+            }
+          }
+        }
+      ],
+      "handler": "FIDCClientHandler"
+    }
+  }
+}

@@ -8,21 +8,7 @@
     "type": "Chain",
     "config": {
       "filters": [
-        {
-          "name": "hostHeader",
-          "type": "HeaderFilter",
-          "config": {
-            "messageType": "REQUEST",
-            "remove": [
-              "host"
-            ],
-            "add": {
-              "host": [
-                "${frConfigs.amHost}"
-              ]
-            }
-          }
-        }
+        "hostHeader"
       ],
       "handler": "FIDCClientHandler"
     }
