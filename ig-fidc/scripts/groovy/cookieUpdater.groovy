@@ -13,7 +13,7 @@
  * Header, with the fields enclosed by brackets [] replaced by your own identifying
  * information: "Portions copyright [year] [name of copyright owner]".
  *
- * IG-Examples:: Created by Charan Mann on 12/22/20 , 11:21 AM.
+ * IG-Examples: Created by Charan Mann on 12/22/20 , 11:21 AM.
  */
 
 /*

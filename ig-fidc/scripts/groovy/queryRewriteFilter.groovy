@@ -13,19 +13,19 @@
  * Header, with the fields enclosed by brackets [] replaced by your own identifying
  * information: "Portions copyright [year] [name of copyright owner]".
  *
- * IG-Examples:: Created by Charan Mann on 12/23/20 , 10:24 AM.
+ * IG-Examples: Created by Charan Mann on 12/23/20 , 10:24 AM.
  */
 
 /*
  * Rewrites the query params
  *
- * This script requires these arguments: mappings
+ * This script requires this argument: mappings (a map of key:value pairs where key is original value and value is replacement value)
  */
 def params = request.uri.query
 logger.info("Original request uri: ${request.uri}")
 
 mappings.each { key, value ->
-    // Replace if key is param of query params
+    // Replace if key is present in query params
     if (params.indexOf(key) != -1) {
         logger.info("Replacing query param: ${key} with ${value}")
         params = params.replace(key, value)
@@ -36,6 +36,6 @@ logger.info("Updated query params: ${params}")
 request.uri.query = params
 logger.info("Updated request uri: ${request.uri}")
 
-// Call the next handler.
+// Invoke the next handler
 return next.handle(context, request)
 
