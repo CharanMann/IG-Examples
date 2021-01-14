@@ -2,6 +2,9 @@
   "name": "03-oauth-rs-jwt",
   "baseURI": "http://app.example.com:8081",
   "condition": "${matches(request.uri.path, '^/rs$')}",
+  "globalDecorators": {
+    "capture": "all"
+  },
   "heap": [
     {
       "name": "KeyStoreSecretStore-1",
