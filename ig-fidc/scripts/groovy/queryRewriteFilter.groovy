@@ -31,17 +31,19 @@ import org.forgerock.http.protocol.Form
  *
  */
 def queryParams = request.uri.query
-logger.info("Original request uri: ${request.uri}")
+logger.info("Original request URI: ${request.uri}")
 
 //Get RelayState
-def relayState
-int relayStateIndex = queryParams.indexOf('RelayState')
+def relayStateEncoded
+def requestURIString = request.uri.toString()
+int relayStateIndex = requestURIString.indexOf('&RelayState')
 
 // If RelayState parameter exists
 if (relayStateIndex != -1) {
-    relayState = queryParams.substring(relayStateIndex - 1, queryParams.length())
-    queryParams = queryParams - relayState
-    logger.info("Query params after removing relayState: ${queryParams}")
+    relayStateEncoded = requestURIString.substring(relayStateIndex, requestURIString.length())
+    queryParams = queryParams.substring(0, queryParams.indexOf('&RelayState'))
+    logger.info("RelayState from request URI: ${relayStateEncoded}")
+    logger.info("Query params after removing RelayState: ${queryParams}")
 }
 
 // If query params and mappings are not null
@@ -72,14 +74,15 @@ if (queryParams && mappings) {
     }
     logger.info("Updated query params: ${form}")
 
+    // If RelayState parameter exists
     if (relayStateIndex != -1) {
-        logger.info("Adding RelayState back to uri: ${relayState}")
-        request.uri.query = form.toQueryString() + relayState
+        logger.info("Adding RelayState: ${relayStateEncoded} back to request URI")
+        request.uri.query = form.toQueryString() + relayStateEncoded
     } else {
         request.uri.query = form.toQueryString()
     }
 
-    logger.info("Updated request uri: ${request.uri}")
+    logger.info("Updated request URI: ${request.uri}")
 }
 
 // Invoke the next handler
