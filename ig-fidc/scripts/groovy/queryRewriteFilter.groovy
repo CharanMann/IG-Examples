@@ -19,7 +19,7 @@ import org.forgerock.http.protocol.Form
  */
 
 /*
- * Rewrites the query params
+ * Rewrites the query params. Note: RelayState needs to be last parameter in SAML URL
  *
  * This script requires this argument: mappings (a rewrite map of key:value pairs where key is parameter name and value is a map of replacements).
  *         "mappings": {
@@ -32,6 +32,17 @@ import org.forgerock.http.protocol.Form
  */
 def queryParams = request.uri.query
 logger.info("Original request uri: ${request.uri}")
+
+//Get RelayState
+def relayState
+int relayStateIndex = queryParams.indexOf('RelayState')
+
+// If RelayState parameter exists
+if (relayStateIndex != -1) {
+    relayState = queryParams.substring(relayStateIndex - 1, queryParams.length())
+    queryParams = queryParams - relayState
+    logger.info("Query params after removing relayState: ${queryParams}")
+}
 
 // If query params and mappings are not null
 if (queryParams && mappings) {
@@ -61,7 +72,13 @@ if (queryParams && mappings) {
     }
     logger.info("Updated query params: ${form}")
 
-    request.uri.query = form.toQueryString()
+    if (relayStateIndex != -1) {
+        logger.info("Adding RelayState back to uri: ${relayState}")
+        request.uri.query = form.toQueryString() + relayState
+    } else {
+        request.uri.query = form.toQueryString()
+    }
+
     logger.info("Updated request uri: ${request.uri}")
 }
 
