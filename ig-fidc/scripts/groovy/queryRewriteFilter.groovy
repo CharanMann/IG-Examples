@@ -74,12 +74,11 @@ if (queryParams && mappings) {
     }
     logger.info("Updated query params: ${form}")
 
+    request.uri.query = form.toQueryString()
     // If RelayState parameter exists
     if (relayStateIndex != -1) {
         logger.info("Adding RelayState: ${relayStateEncoded} back to request URI")
-        request.uri.query = form.toQueryString() + relayStateEncoded
-    } else {
-        request.uri.query = form.toQueryString()
+        request.uri = request.uri.toString() + relayStateEncoded
     }
 
     logger.info("Updated request URI: ${request.uri}")

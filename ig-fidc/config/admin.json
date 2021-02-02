@@ -1,4 +1,5 @@
 {
+  "preserveOriginalQueryString": true,
   "connectors": [
     {
       "port": 9090
