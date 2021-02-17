@@ -1,0 +1,127 @@
+{
+  "baseURI": "http://app.example.com:8081",
+  "condition": "${matches(request.uri.path, '^/rs$')}",
+  "globalDecorators": {
+    "capture": "all"
+  },
+  "heap": [
+    {
+      "name": "KeyStoreSecretStore-1",
+      "type": "KeyStoreSecretStore",
+      "config": {
+        "file": "${openig.configDirectory}/secrets/jwtbuilderkeystore.pkcs12",
+        "storeType": "PKCS12",
+        "storePassword": "keystore.secret.id",
+        "keyEntryPassword": "keystore.secret.id",
+        "secretsProvider": "FileSystemSecretStore-1",
+        "mappings": [
+          {
+            "secretId": "id.key.for.signing.jwt",
+            "aliases": [
+              "signature-key"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "handler": {
+    "type": "Chain",
+    "config": {
+      "filters": [
+        {
+          "name": "OAuth2ResourceServerFilter-1",
+          "type": "OAuth2ResourceServerFilter",
+          "config": {
+            "scopes": [
+              "mail",
+              "employeenumber",
+              "telephoneNumber"
+            ],
+            "requireHttps": false,
+            "realm": "customers",
+            "accessTokenResolver": {
+              "name": "CacheAccessTokenResolver-1",
+              "type": "CacheAccessTokenResolver",
+              "config": {
+                "enabled": true,
+                "defaultTimeout ": "1 hour",
+                "maximumTimeToCache": "1 day",
+                "delegate": {
+                  "name": "OpenAmAccessTokenResolver-1",
+                  "type": "OpenAmAccessTokenResolver",
+                  "config": {
+                    "amService": "AMService",
+                    "providerHandler": {
+                      "type": "Chain",
+                      "config": {
+                        "filters": [
+                          {
+                            "type": "HttpBasicAuthenticationClientFilter",
+                            "config": {
+                              "username": "ig_agent",
+                              "passwordSecretId": "agent.secret.id",
+                              "secretsProvider": "FileSystemSecretStore-1"
+                            }
+                          }
+                        ],
+                        "handler": {
+                          "type": "Delegate",
+                          "capture": "all",
+                          "config": {
+                            "delegate": "ForgeRockClientHandler"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "CurrentTime",
+          "type": "ScriptableFilter",
+          "config": {
+            "type": "application/x-groovy",
+            "source": [
+              "def now = System.currentTimeMillis()/1000",
+              "attributes.now = now",
+              "attributes.exp = now + 5",
+              "return next.handle(context, request)"
+            ]
+          }
+        },
+        {
+          "name": "JwtBuilderFilter-1",
+          "type": "JwtBuilderFilter",
+          "config": {
+            "template": {
+              "iss": "IG",
+              "info": "${contexts.oauth2.accessToken.info}",
+              "iat": "${attributes.now}",
+              "exp": "${attributes.exp}"
+            },
+            "secretsProvider": "KeyStoreSecretStore-1",
+            "signature": {
+              "secretId": "id.key.for.signing.jwt"
+            }
+          }
+        }
+      ],
+      "handler": {
+        "type": "StaticResponseHandler",
+        "config": {
+          "status": 200,
+          "headers": {
+            "Content-Type": [
+              "application/json"
+            ]
+          },
+          "entity": "{\n    \"token\": \"${contexts.jwtBuilder.value}\",\n    \"token_type\": \"Bearer\"\n}"
+        }
+      }
+    }
+  }
+}

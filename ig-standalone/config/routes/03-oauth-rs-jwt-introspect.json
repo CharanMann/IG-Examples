@@ -1,5 +1,4 @@
 {
-  "name": "03-oauth-rs-jwt",
   "baseURI": "http://app.example.com:8081",
   "condition": "${matches(request.uri.path, '^/rs$')}",
   "globalDecorators": {
@@ -36,7 +35,8 @@
           "config": {
             "scopes": [
               "mail",
-              "employeenumber"
+              "employeenumber",
+              "telephoneNumber"
             ],
             "requireHttps": false,
             "realm": "customers",
@@ -99,7 +99,7 @@
           "config": {
             "template": {
               "iss": "IG",
-              "scopes": "${contexts.oauth2.accessToken.scopes}",
+              "info": "${contexts.oauth2.accessToken.info}",
               "iat": "${attributes.now}",
               "exp": "${attributes.exp}"
             },
