@@ -18,6 +18,10 @@
       }
     },
     {
+      "name": "SystemAndEnvSecretStore-1",
+      "type": "SystemAndEnvSecretStore"
+    },
+    {
       "name": "capture",
       "type": "CaptureDecorator",
       "config": {
@@ -35,6 +39,24 @@
           "X-Forwarded-For": [
             "${contexts.client.remoteAddress} "
           ]
+        }
+      }
+    },
+    {
+      "name": "AMService",
+      "type": "AmService",
+      "config": {
+        "url": "${frConfigs.amUrl}",
+        "realm": "${frConfigs.amRealm}",
+        "ssoTokenHeader": "${frConfigs.ssoCookieName}",
+        "agent": {
+          "username": "${frConfigs.igAgentName}",
+          "passwordSecretId": "agent.secret.id"
+        },
+        "secretsProvider": "FileSystemSecretStore-1",
+        "version": "7.1",
+        "notifications": {
+          "enabled": false
         }
       }
     },

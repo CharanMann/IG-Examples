@@ -1,9 +1,9 @@
 {
-  "amUrl": "https://openam-tenantName-dev.id.forgerock.io",
+  "amUrl": "https://openam-tenantName-dev.id.forgerock.io/am",
   "amHost": "openam-tenantName-dev.id.forgerock.io",
-  "amRealm": "/",
-  "amAuthnRealm": "customers",
-  "igAgentName": "IG7",
+  "amRealm": "/alpha",
+  "amAuthnRealm": "alpha",
+  "igAgentName": "ig_agent",
   "ssoCookieName": "e9171d29641abed",
   "igAuditDir": "audit",
   "cookieDomain": ".tenantName.com"
