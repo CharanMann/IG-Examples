@@ -1,0 +1,116 @@
+{
+  "name": "api",
+  "baseURI": "https://6047a482b801a40017ccca52.mockapi.io",
+  "condition": "${matches(request.uri.path, '^/api/object/1')}",
+  "handler": "Chain-1",
+  "heap": [
+    {
+      "name": "ReverseProxyHandler",
+      "type": "ReverseProxyHandler"
+    },
+    {
+      "type": "BaseUriDecorator",
+      "name": "baseUri"
+    },
+    {
+      "type": "TimerDecorator",
+      "name": "timer",
+      "config": {
+        "timeUnit": "ms"
+      }
+    },
+    {
+      "type": "CaptureDecorator",
+      "name": "capture",
+      "config": {
+        "captureEntity": false,
+        "captureContext": false,
+        "maxEntityLength": 524288
+      }
+    },
+    {
+      "name": "Chain-1",
+      "type": "Chain",
+      "config": {
+        "handler": "ReverseProxyHandler",
+        "filters": [
+          "OAuth2ResourceServerFilter-1",
+          "AllowOnlyFilter-1",
+          "HeaderFilter-1"
+        ]
+      }
+    },
+    {
+      "name": "HeaderFilter-1",
+      "type": "HeaderFilter",
+      "config": {
+        "messageType": "REQUEST",
+        "remove": [
+          "host"
+        ],
+        "add": {
+          "host": [
+            "6047a482b801a40017ccca52.mockapi.io"
+          ]
+        }
+      }
+    },
+    {
+      "type": "TokenIntrospectionAccessTokenResolver",
+      "name": "TokenIntrospectionAccessTokenResolver-2",
+      "config": {
+        "endpoint": "https://openam-bootcamp-bootcampcmann.forgeblocks.com/am/oauth2/realms/alpha/introspect",
+        "providerHandler": "Chain-1"
+      }
+    },
+    {
+      "name": "OAuth2ResourceServerFilter-1",
+      "type": "OAuth2ResourceServerFilter",
+      "config": {
+        "scopes": [
+          "read_object"
+        ],
+        "requireHttps": false,
+        "realm": "Alpha",
+        "accessTokenResolver": {
+          "name": "TokenIntrospectionAccessTokenResolver-1",
+          "type": "TokenIntrospectionAccessTokenResolver",
+          "config": {
+            "endpoint": "https://openam-bootcamp-bootcampcmann.forgeblocks.com/am/oauth2/realms/alpha/introspect",
+            "providerHandler": {
+              "type": "Chain",
+              "config": {
+                "filters": [
+                  {
+                    "type": "HeaderFilter",
+                    "config": {
+                      "messageType": "request",
+                      "add": {
+                        "Authorization": [
+                          "Basic ${encodeBase64('api-security-gateway:password')}"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "handler": "ForgeRockClientHandler"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "AllowOnlyFilter-1",
+      "type": "AllowOnlyFilter",
+      "config": {
+        "rules": [
+          {
+            "name": "Enforce Mail Domain",
+            "when": "${contexts.oauth2.accessToken.info.domain == 'OpenRock.com'}"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "name": "01-pep-igApp",
+  "baseURI": "http://igApp7.example.com:8081",
+  "condition": "${matches(request.uri.path, '^/home/pep-sso')}",
+  "capture": "all",
+  "handler": {
+    "type": "Chain",
+    "config": {
+      "filters": [
+        {
+          "name": "SingleSignOnFilter-1",
+          "type": "SingleSignOnFilter",
+          "config": {
+            "amService": "AMService",
+            "realm": "${frConfigs.amAuthnRealm}"
+          },
+          "capture": "all"
+        },
+        {
+          "name": "SessionInfoFilter-1",
+          "type": "SessionInfoFilter",
+          "config": {
+            "amService": "AMService"
+          }
+        },
+        {
+          "name": "JwtBuilderFilter-1",
+          "type": "JwtBuilderFilter",
+          "config": {
+            "template": {
+              "name": "${contexts.amSession.username}",
+              "realm": "${contexts.amSession.realm}",
+              "token": "${attributes.token}"
+            }
+          }
+        },
+        {
+          "name": "addHeaders",
+          "type": "HeaderFilter",
+          "config": {
+            "messageType": "REQUEST",
+            "add": {
+              "X-IG-SessionInfo": [
+                "username: ${contexts.amSession.username}, realm: ${contexts.amSession.realm}, AuthLevel: ${contexts.amSession.properties.AuthLevel}, maxSessionExpirationTime : ${contexts.amSession.maxSessionExpirationTime}, maxIdleExpirationTime : ${contexts.amSession.maxIdleExpirationTime}, latestAccessTime : ${contexts.amSession.latestAccessTime} "
+              ],
+              "X-IG-JWT": [
+                "${contexts.jwtBuilder.value}"
+              ]
+            }
+          },
+          "capture": "all"
+        }
+      ],
+      "handler": "ReverseProxyHandler"
+    },
+    "capture": "all"
+  }
+}
