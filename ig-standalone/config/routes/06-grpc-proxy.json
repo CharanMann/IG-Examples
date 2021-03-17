@@ -1,0 +1,14 @@
+{
+  "name": "grpc_proxy",
+  "globalDecorators": {
+    "capture": "all"
+  },
+  "baseURI": "http://internal.example.com:8084",
+  "handler": {
+    "type": "ReverseProxyHandler",
+    "config": {
+      "protocolVersion": "HTTP/2",
+      "http2PriorKnowledge": true
+    }
+  }
+}

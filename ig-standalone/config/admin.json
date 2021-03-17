@@ -1,4 +1,5 @@
 {
+  "streamingEnabled": true,
   "connectors": [
     {
       "port": 9090
