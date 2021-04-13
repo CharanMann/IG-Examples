@@ -14,7 +14,7 @@
           "config": {
             "onResponse": [
               {
-                "condition": "${response.status.code == 302}",
+                "condition": "${response.status.code == 302 && response.headers['Location'][0] == \"http://invalidlocation.example.com\"}",
                 "handler": "ReverseProxyHandler"
               }
             ]
@@ -25,7 +25,8 @@
           "type": "SingleSignOnFilter",
           "config": {
             "amService": "AMService",
-            "realm": "${frConfigs.amAuthnRealm}"
+            "realm": "${frConfigs.amAuthnRealm}",
+            "loginEndpoint": "http://invalidlocation.example.com"
           }
         },
         {
