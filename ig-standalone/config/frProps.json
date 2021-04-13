@@ -1,5 +1,5 @@
 {
-  "amUrl": "http://am653.example.com:8080/am",
+  "amUrl": "http://am7.example.com:8086/am",
   "amRealm": "/customers",
   "amAuthnRealm": "customers",
   "igAgentName": "ig_agent",

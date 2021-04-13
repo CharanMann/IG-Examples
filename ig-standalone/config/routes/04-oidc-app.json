@@ -1,0 +1,70 @@
+{
+  "name": "04-oidc-app",
+  "baseURI": "http://igApp7.example.com:8081",
+  "condition": "${matches(request.uri.path, '^/home/id_token')}",
+  "handler": {
+    "type": "Chain",
+    "config": {
+      "filters": [
+        {
+          "name": "OAuth2ClientFilter-1",
+          "type": "OAuth2ClientFilter",
+          "config": {
+            "clientEndpoint": "/home/id_token",
+            "failureHandler": {
+              "type": "StaticResponseHandler",
+              "config": {
+                "status": 500,
+                "headers": {
+                  "Content-Type": [
+                    "text/plain"
+                  ]
+                },
+                "entity": "Error in OAuth 2.0 setup."
+              }
+            },
+            "registrations": [
+              {
+                "name": "oauth2-client",
+                "type": "ClientRegistration",
+                "config": {
+                  "clientId": "oidc-client",
+                  "clientSecretId": "client.secret.id",
+                  "issuer": {
+                    "name": "Issuer",
+                    "type": "Issuer",
+                    "config": {
+                      "wellKnownEndpoint": "${frConfigs.amUrl}/oauth2/realms/customers/.well-known/openid-configuration"
+                    }
+                  },
+                  "scopes": [
+                    "openid",
+                    "profile",
+                    "mail"
+                  ],
+                  "secretsProvider": "FileSystemSecretStore-1",
+                  "tokenEndpointAuthMethod": "client_secret_basic"
+                }
+              }
+            ],
+            "requireHttps": false,
+            "cacheExpiration": "disabled"
+          }
+        },
+        {
+          "name": "addHeaders",
+          "type": "HeaderFilter",
+          "config": {
+            "messageType": "REQUEST",
+            "add": {
+              "X-IG-SessionInfo": [
+                "session: ${session.oauth2:http://ig-app7.example.com:9090/home/id_token}"
+              ]
+            }
+          }
+        }
+      ],
+      "handler": "ReverseProxyHandler"
+    }
+  }
+}

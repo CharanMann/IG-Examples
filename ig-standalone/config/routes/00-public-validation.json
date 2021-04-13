@@ -1,0 +1,69 @@
+{
+  "baseURI": "http://igApp7.example.com:8081",
+  "condition": "${matches(request.uri.path, '^/home/pep-sso')}",
+  "globalDecorators": {
+    "capture": "all"
+  },
+  "handler": {
+    "type": "Chain",
+    "config": {
+      "filters": [
+        {
+          "comment": "(Optional) Auth failed",
+          "type": "SwitchFilter",
+          "config": {
+            "onResponse": [
+              {
+                "condition": "${response.status.code == 302}",
+                "handler": "ReverseProxyHandler"
+              }
+            ]
+          }
+        },
+        {
+          "name": "SingleSignOnFilter-1",
+          "type": "SingleSignOnFilter",
+          "config": {
+            "amService": "AMService",
+            "realm": "${frConfigs.amAuthnRealm}"
+          }
+        },
+        {
+          "name": "UserProfileFilter",
+          "type": "UserProfileFilter",
+          "config": {
+            "username": "${contexts.ssoToken.info.uid}",
+            "userProfileService": {
+              "type": "UserProfileService",
+              "config": {
+                "amService": "AMService",
+                "profileAttributes": [
+                  "employeeNumber",
+                  "mail"
+                ],
+                "realm": "${frConfigs.amAuthnRealm}"
+              }
+            }
+          }
+        },
+        {
+          "name": "addHeaders",
+          "type": "HeaderFilter",
+          "config": {
+            "messageType": "REQUEST",
+            "add": {
+              "X-IG-SessionInfo": [
+                "username: ${contexts.amSession.username}, realm: ${contexts.amSession.realm}, AuthLevel: ${contexts.amSession.properties.AuthLevel}, maxSessionExpirationTime : ${contexts.amSession.maxSessionExpirationTime}, maxIdleExpirationTime : ${contexts.amSession.maxIdleExpirationTime}, latestAccessTime : ${contexts.amSession.latestAccessTime} "
+              ],
+              "X-IG-UserProfileInfo": [
+                "rawInfo: ${contexts.userProfile.rawInfo}"
+              ]
+            }
+          }
+        }
+      ],
+      "handler": "ReverseProxyHandler"
+    }
+  }
+}
+
