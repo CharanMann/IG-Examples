@@ -57,8 +57,8 @@
           "config": {
             "messageType": "REQUEST",
             "add": {
-              "X-IG-SessionInfo": [
-                "session: ${session.oauth2:http://ig-app7.example.com:9090/home/id_token}"
+              "X-UserProfile": [
+                "user_info: ${attributes.openid.user_info}"
               ]
             }
           }
