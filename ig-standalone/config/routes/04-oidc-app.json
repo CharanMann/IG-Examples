@@ -2,6 +2,7 @@
   "name": "04-oidc-app",
   "baseURI": "http://igApp7.example.com:8081",
   "condition": "${matches(request.uri.path, '^/home/id_token')}",
+  "capture": "all",
   "handler": {
     "type": "Chain",
     "config": {
@@ -25,22 +26,22 @@
             },
             "registrations": [
               {
-                "name": "oauth2-client",
+                "name": "oidc-user-info-client",
                 "type": "ClientRegistration",
                 "config": {
-                  "clientId": "oidc-client",
+                  "clientId": "oidc_client",
                   "clientSecretId": "client.secret.id",
                   "issuer": {
                     "name": "Issuer",
                     "type": "Issuer",
                     "config": {
-                      "wellKnownEndpoint": "${frConfigs.amUrl}/oauth2/realms/customers/.well-known/openid-configuration"
+                      "wellKnownEndpoint": "${frConfigs.amUrl}/oauth2/realms/${frConfigs.amAuthnRealm}/.well-known/openid-configuration"
                     }
                   },
                   "scopes": [
                     "openid",
                     "profile",
-                    "mail"
+                    "email"
                   ],
                   "secretsProvider": "FileSystemSecretStore-1",
                   "tokenEndpointAuthMethod": "client_secret_basic"
@@ -48,7 +49,8 @@
               }
             ],
             "requireHttps": false,
-            "cacheExpiration": "disabled"
+            "cacheExpiration": "disabled",
+            "capture": "all"
           }
         },
         {
@@ -61,7 +63,8 @@
                 "user_info: ${attributes.openid.user_info}"
               ]
             }
-          }
+          },
+          "capture": "all"
         }
       ],
       "handler": "ReverseProxyHandler"
