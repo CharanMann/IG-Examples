@@ -1,1 +1,24 @@
-<EntityDescriptor entityID="OpenIG-HA" xmlns="urn:oasis:names:tc:SAML:2.0:metadata"><SPSSODescriptor AuthnRequestsSigned="false" WantAssertionsSigned="false" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol"><SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://openig.example.net:9000/saml/fedletSloRedirect" ResponseLocation="http://openig.example.net:9000/saml/fedletSloRedirect"/><SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://openig.example.net:9000/saml/fedletSloPOST" ResponseLocation="http://openig.example.net:9000/saml/fedletSloPOST"/><SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="http://openig.example.net:9000/saml/fedletSloSoap"/><NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</NameIDFormat><AssertionConsumerService isDefault="true" index="0" Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://openig.example.net:9000/saml/fedletapplication"/><AssertionConsumerService index="1" Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="http://openig.example.net:9000/saml/fedletapplication"/></SPSSODescriptor><RoleDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:query="urn:oasis:names:tc:SAML:metadata:ext:query" xsi:type="query:AttributeQueryDescriptorType" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol"></RoleDescriptor><XACMLAuthzDecisionQueryDescriptor WantAssertionsSigned="false" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol"></XACMLAuthzDecisionQueryDescriptor></EntityDescriptor>
+<EntityDescriptor entityID="OpenIG-HA" xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
+    <SPSSODescriptor AuthnRequestsSigned="false" WantAssertionsSigned="false"
+                     protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+                             Location="http://openig.example.net:9000/saml/fedletSloRedirect"
+                             ResponseLocation="http://openig.example.net:9000/saml/fedletSloRedirect"/>
+        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+                             Location="http://openig.example.net:9000/saml/fedletSloPOST"
+                             ResponseLocation="http://openig.example.net:9000/saml/fedletSloPOST"/>
+        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP"
+                             Location="http://openig.example.net:9000/saml/fedletSloSoap"/>
+        <NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</NameIDFormat>
+        <AssertionConsumerService isDefault="true" index="0" Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+                                  Location="http://openig.example.net:9000/saml/fedletapplication"/>
+        <AssertionConsumerService index="1" Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact"
+                                  Location="http://openig.example.net:9000/saml/fedletapplication"/>
+    </SPSSODescriptor>
+    <RoleDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xmlns:query="urn:oasis:names:tc:SAML:metadata:ext:query"
+                    xsi:type="query:AttributeQueryDescriptorType"
+                    protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol"></RoleDescriptor>
+    <XACMLAuthzDecisionQueryDescriptor WantAssertionsSigned="false"
+                                       protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol"></XACMLAuthzDecisionQueryDescriptor>
+</EntityDescriptor>

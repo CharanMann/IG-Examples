@@ -1,7 +1,7 @@
-<EntityConfig xmlns="urn:sun:fm:SAML:2.0:entityconfig"
-    xmlns:fm="urn:sun:fm:SAML:2.0:entityconfig"
-    hosted="false"
-    entityID="http://adfs.igcorp.example.com/adfs/services/trust">
+<EntityConfig xmlns:fm="urn:sun:fm:SAML:2.0:entityconfig"
+              xmlns="urn:sun:fm:SAML:2.0:entityconfig"
+              hosted="false"
+              entityID="http://adfs.igcorp.example.com/adfs/services/trust">
 
     <IDPSSOConfig metaAlias="/employees/adfs">
         <Attribute name="description">
@@ -50,11 +50,11 @@
             <Value>com.sun.identity.saml2.plugins.DefaultAssertionIDRequestMapper</Value>
         </Attribute>
         <Attribute name="nameIDFormatMap">
-           <Value>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress=mail</Value>
-           <Value>urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName=</Value>
-           <Value>urn:oasis:names:tc:SAML:1.1:nameid-format:WindowsDomainQualifiedName=</Value>
-           <Value>urn:oasis:names:tc:SAML:2.0:nameid-format:kerberos=</Value>
-           <Value>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified=</Value>
+            <Value>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress=mail</Value>
+            <Value>urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName=</Value>
+            <Value>urn:oasis:names:tc:SAML:1.1:nameid-format:WindowsDomainQualifiedName=</Value>
+            <Value>urn:oasis:names:tc:SAML:2.0:nameid-format:kerberos=</Value>
+            <Value>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified=</Value>
         </Attribute>
         <Attribute name="idpECPSessionMapper">
             <Value>com.sun.identity.saml2.plugins.DefaultIDPECPSessionMapper</Value>
@@ -98,12 +98,12 @@
         <Attribute name="AuthUrl">
             <Value></Value>
         </Attribute>
-       <Attribute name="appLogoutUrl">
-           <Value></Value>
-       </Attribute>
-       <Attribute name="idpSessionSyncEnabled">
-           <Value>false</Value>
-       </Attribute>
+        <Attribute name="appLogoutUrl">
+            <Value></Value>
+        </Attribute>
+        <Attribute name="idpSessionSyncEnabled">
+            <Value>false</Value>
+        </Attribute>
         <Attribute name="relayStateUrlList">
         </Attribute>
     </IDPSSOConfig>

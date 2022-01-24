@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <EntityDescriptor entityID="OpenIG" xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
-    <SPSSODescriptor AuthnRequestsSigned="true" WantAssertionsSigned="true" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+    <SPSSODescriptor AuthnRequestsSigned="true" WantAssertionsSigned="true"
+                     protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
         <KeyDescriptor use="signing">
             <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
                 <ds:X509Data>
                     <ds:X509Certificate>
-MIIDIDCCAgigAwIBAgIEWTbT0DANBgkqhkiG9w0BAQUFADBSMQswCQYDVQQGEwJV
-UzELMAkGA1UECAwCQ0ExCzAJBgNVBAcMAlNGMQswCQYDVQQKDAJGUjELMAkGA1UE
-CwwCUFMxDzANBgNVBAMMBk9wZW5JRzAeFw0xNzA2MDYxNjExMDBaFw0yNzA2MDYx
-NjExMDBaMFIxCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJDQTELMAkGA1UEBwwCU0Yx
-CzAJBgNVBAoMAkZSMQswCQYDVQQLDAJQUzEPMA0GA1UEAwwGT3BlbklHMIIBIjAN
-BgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnJevQ4958AoNNVlyh8hkjr5vIWrN
-CmZiQnqN1+Ta9zj1taYP+gzubG3gDBEbZhSCF56yUpFSXoX94OyrxUFWMPAQd3vz
-i6mEIkbV8jR7NMw+JVXxQh4UdwhuvkeH1CXdE+sLz/0dYn/udb61ezwoY7eJdLIj
-Yd+hU+zpnpGu1ZteFjD4MPDkt/FR27rmANt0kwxgaS9MOEXCGmRZnKK9Jk7rgigl
-C01NlPUviOETzEzy/as/g+dUMuFrffPH0GG84VYGW0airRrImwlsfbel8XOG6k+t
-nKbyPmahNQC+p2VMEZNUGEI0STVC3/hZmE07AqBQOkmORVKFzv2w1QXMGQIDAQAB
-MA0GCSqGSIb3DQEBBQUAA4IBAQBR404OUWw0Yc5J5jsPiSttCetQ3wwU/FqO8Kkh
-8PTwuK9aQzAqh9qB2k054MCIGMLGqUnSU70GvUl51Zhx1amWGaag7oOL/ObjJA+k
-k5jK37fPd1m/g0jfeAnA+k0rzcxFLDLuPOWfp54q8b0VFRSXR4gGwmsS99ZKp2/n
-rSVT6KVC9Y4xrTaq6kkavN06Xe8/uQlXr6MKUasImdESz3RN3+bReNjj90Q2rcYg
-H2otKY/luJUhNSo/agG19Vhwzy4+yLEgIjCbVbqcKwp55lHIG9998/Zw4inDaoVw
-gkVJcE7ltTzpWeUxAKwVUOjYF9ipdI7siCXfWBnoIdW4/ftd
+                        MIIDIDCCAgigAwIBAgIEWTbT0DANBgkqhkiG9w0BAQUFADBSMQswCQYDVQQGEwJV
+                        UzELMAkGA1UECAwCQ0ExCzAJBgNVBAcMAlNGMQswCQYDVQQKDAJGUjELMAkGA1UE
+                        CwwCUFMxDzANBgNVBAMMBk9wZW5JRzAeFw0xNzA2MDYxNjExMDBaFw0yNzA2MDYx
+                        NjExMDBaMFIxCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJDQTELMAkGA1UEBwwCU0Yx
+                        CzAJBgNVBAoMAkZSMQswCQYDVQQLDAJQUzEPMA0GA1UEAwwGT3BlbklHMIIBIjAN
+                        BgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnJevQ4958AoNNVlyh8hkjr5vIWrN
+                        CmZiQnqN1+Ta9zj1taYP+gzubG3gDBEbZhSCF56yUpFSXoX94OyrxUFWMPAQd3vz
+                        i6mEIkbV8jR7NMw+JVXxQh4UdwhuvkeH1CXdE+sLz/0dYn/udb61ezwoY7eJdLIj
+                        Yd+hU+zpnpGu1ZteFjD4MPDkt/FR27rmANt0kwxgaS9MOEXCGmRZnKK9Jk7rgigl
+                        C01NlPUviOETzEzy/as/g+dUMuFrffPH0GG84VYGW0airRrImwlsfbel8XOG6k+t
+                        nKbyPmahNQC+p2VMEZNUGEI0STVC3/hZmE07AqBQOkmORVKFzv2w1QXMGQIDAQAB
+                        MA0GCSqGSIb3DQEBBQUAA4IBAQBR404OUWw0Yc5J5jsPiSttCetQ3wwU/FqO8Kkh
+                        8PTwuK9aQzAqh9qB2k054MCIGMLGqUnSU70GvUl51Zhx1amWGaag7oOL/ObjJA+k
+                        k5jK37fPd1m/g0jfeAnA+k0rzcxFLDLuPOWfp54q8b0VFRSXR4gGwmsS99ZKp2/n
+                        rSVT6KVC9Y4xrTaq6kkavN06Xe8/uQlXr6MKUasImdESz3RN3+bReNjj90Q2rcYg
+                        H2otKY/luJUhNSo/agG19Vhwzy4+yLEgIjCbVbqcKwp55lHIG9998/Zw4inDaoVw
+                        gkVJcE7ltTzpWeUxAKwVUOjYF9ipdI7siCXfWBnoIdW4/ftd
                     </ds:X509Certificate>
                 </ds:X509Data>
             </ds:KeyInfo>
@@ -30,35 +31,43 @@ gkVJcE7ltTzpWeUxAKwVUOjYF9ipdI7siCXfWBnoIdW4/ftd
             <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
                 <ds:X509Data>
                     <ds:X509Certificate>
-MIIDIDCCAgigAwIBAgIEWTbT0DANBgkqhkiG9w0BAQUFADBSMQswCQYDVQQGEwJV
-UzELMAkGA1UECAwCQ0ExCzAJBgNVBAcMAlNGMQswCQYDVQQKDAJGUjELMAkGA1UE
-CwwCUFMxDzANBgNVBAMMBk9wZW5JRzAeFw0xNzA2MDYxNjExMDBaFw0yNzA2MDYx
-NjExMDBaMFIxCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJDQTELMAkGA1UEBwwCU0Yx
-CzAJBgNVBAoMAkZSMQswCQYDVQQLDAJQUzEPMA0GA1UEAwwGT3BlbklHMIIBIjAN
-BgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnJevQ4958AoNNVlyh8hkjr5vIWrN
-CmZiQnqN1+Ta9zj1taYP+gzubG3gDBEbZhSCF56yUpFSXoX94OyrxUFWMPAQd3vz
-i6mEIkbV8jR7NMw+JVXxQh4UdwhuvkeH1CXdE+sLz/0dYn/udb61ezwoY7eJdLIj
-Yd+hU+zpnpGu1ZteFjD4MPDkt/FR27rmANt0kwxgaS9MOEXCGmRZnKK9Jk7rgigl
-C01NlPUviOETzEzy/as/g+dUMuFrffPH0GG84VYGW0airRrImwlsfbel8XOG6k+t
-nKbyPmahNQC+p2VMEZNUGEI0STVC3/hZmE07AqBQOkmORVKFzv2w1QXMGQIDAQAB
-MA0GCSqGSIb3DQEBBQUAA4IBAQBR404OUWw0Yc5J5jsPiSttCetQ3wwU/FqO8Kkh
-8PTwuK9aQzAqh9qB2k054MCIGMLGqUnSU70GvUl51Zhx1amWGaag7oOL/ObjJA+k
-k5jK37fPd1m/g0jfeAnA+k0rzcxFLDLuPOWfp54q8b0VFRSXR4gGwmsS99ZKp2/n
-rSVT6KVC9Y4xrTaq6kkavN06Xe8/uQlXr6MKUasImdESz3RN3+bReNjj90Q2rcYg
-H2otKY/luJUhNSo/agG19Vhwzy4+yLEgIjCbVbqcKwp55lHIG9998/Zw4inDaoVw
-gkVJcE7ltTzpWeUxAKwVUOjYF9ipdI7siCXfWBnoIdW4/ftd
+                        MIIDIDCCAgigAwIBAgIEWTbT0DANBgkqhkiG9w0BAQUFADBSMQswCQYDVQQGEwJV
+                        UzELMAkGA1UECAwCQ0ExCzAJBgNVBAcMAlNGMQswCQYDVQQKDAJGUjELMAkGA1UE
+                        CwwCUFMxDzANBgNVBAMMBk9wZW5JRzAeFw0xNzA2MDYxNjExMDBaFw0yNzA2MDYx
+                        NjExMDBaMFIxCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJDQTELMAkGA1UEBwwCU0Yx
+                        CzAJBgNVBAoMAkZSMQswCQYDVQQLDAJQUzEPMA0GA1UEAwwGT3BlbklHMIIBIjAN
+                        BgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnJevQ4958AoNNVlyh8hkjr5vIWrN
+                        CmZiQnqN1+Ta9zj1taYP+gzubG3gDBEbZhSCF56yUpFSXoX94OyrxUFWMPAQd3vz
+                        i6mEIkbV8jR7NMw+JVXxQh4UdwhuvkeH1CXdE+sLz/0dYn/udb61ezwoY7eJdLIj
+                        Yd+hU+zpnpGu1ZteFjD4MPDkt/FR27rmANt0kwxgaS9MOEXCGmRZnKK9Jk7rgigl
+                        C01NlPUviOETzEzy/as/g+dUMuFrffPH0GG84VYGW0airRrImwlsfbel8XOG6k+t
+                        nKbyPmahNQC+p2VMEZNUGEI0STVC3/hZmE07AqBQOkmORVKFzv2w1QXMGQIDAQAB
+                        MA0GCSqGSIb3DQEBBQUAA4IBAQBR404OUWw0Yc5J5jsPiSttCetQ3wwU/FqO8Kkh
+                        8PTwuK9aQzAqh9qB2k054MCIGMLGqUnSU70GvUl51Zhx1amWGaag7oOL/ObjJA+k
+                        k5jK37fPd1m/g0jfeAnA+k0rzcxFLDLuPOWfp54q8b0VFRSXR4gGwmsS99ZKp2/n
+                        rSVT6KVC9Y4xrTaq6kkavN06Xe8/uQlXr6MKUasImdESz3RN3+bReNjj90Q2rcYg
+                        H2otKY/luJUhNSo/agG19Vhwzy4+yLEgIjCbVbqcKwp55lHIG9998/Zw4inDaoVw
+                        gkVJcE7ltTzpWeUxAKwVUOjYF9ipdI7siCXfWBnoIdW4/ftd
                     </ds:X509Certificate>
                 </ds:X509Data>
             </ds:KeyInfo>
             <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes128-cbc">
                 <xenc:KeySize xmlns:xenc="http://www.w3.org/2001/04/xmlenc#">128</xenc:KeySize>
-</EncryptionMethod>
+            </EncryptionMethod>
         </KeyDescriptor>
-		<SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://docapp-ig.example.net:8443/saml/fedletSloRedirect" ResponseLocation="https://docapp-ig.example.net:8443/saml/fedletSloRedirect"/>
-		<SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://docapp-ig.example.net:8443/saml/fedletSloPOST" ResponseLocation="https://docapp-ig.example.net:8443/saml/fedletSloPOST"/>
-		<SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="https://docapp-ig.example.net:8443/saml/fedletSloSoap"/>
-		<NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</NameIDFormat>
-		<AssertionConsumerService isDefault="true" index="0" Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://docapp-ig.example.net:8443/saml/fedletapplication"/><AssertionConsumerService index="1" Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="https://docapp-ig.example.net:8443/saml/fedletapplication"/>
+        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+                             Location="https://docapp-ig.example.net:8443/saml/fedletSloRedirect"
+                             ResponseLocation="https://docapp-ig.example.net:8443/saml/fedletSloRedirect"/>
+        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+                             Location="https://docapp-ig.example.net:8443/saml/fedletSloPOST"
+                             ResponseLocation="https://docapp-ig.example.net:8443/saml/fedletSloPOST"/>
+        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP"
+                             Location="https://docapp-ig.example.net:8443/saml/fedletSloSoap"/>
+        <NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</NameIDFormat>
+        <AssertionConsumerService isDefault="true" index="0" Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+                                  Location="https://docapp-ig.example.net:8443/saml/fedletapplication"/>
+        <AssertionConsumerService index="1" Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact"
+                                  Location="https://docapp-ig.example.net:8443/saml/fedletapplication"/>
     </SPSSODescriptor>
 </EntityDescriptor>
 

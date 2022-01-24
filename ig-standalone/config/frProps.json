@@ -4,7 +4,5 @@
   "amAuthnRealm": "customers",
   "igAgentName": "ig_agent",
   "ssoCookieName": "iPlanetDirectoryPro",
-  "igAuditDir": "audit",
-  "tokenGenURL": "http://tokenGenerator.example.com:9090/tokenGen",
-  "apiKey": "cGFzc3dvcmQ="
+  "igAuditDir": "audit"
 }

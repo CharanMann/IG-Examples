@@ -42,6 +42,41 @@
           "enabled": true
         }
       }
+    },
+    {
+      "name": "JSONAuditService",
+      "type": "AuditService",
+      "config": {
+        "config": {
+          "filterPolicies": {
+            "field": {
+              "includeIf": [
+                "/access/http/request/queryParameters"
+              ],
+              "excludeIf": [
+                "/access/http/request/queryParameters/metaAlias"
+              ]
+            }
+          }
+        },
+        "eventHandlers": [
+          {
+            "class": "org.forgerock.audit.handlers.json.JsonAuditEventHandler",
+            "config": {
+              "name": "json",
+              "logDirectory": "&{ig.instance.dir}/audit",
+              "topics": [
+                "access"
+              ],
+              "buffering": {
+                "maxSize": 100000,
+                "writeInterval": "100 ms"
+              },
+              "rotationRetentionCheckInterval": "1 m"
+            }
+          }
+        ]
+      }
     }
   ]
 }

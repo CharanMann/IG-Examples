@@ -1,0 +1,7 @@
+{
+  "baseURI": "${frConfigs.amUrl}",
+  "auditService": "JSONAuditService",
+  "condition": "${contains(request.uri.path, '/am')}",
+  "handler": "ForgeRockClientHandler",
+  "capture": "all"
+}

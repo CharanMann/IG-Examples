@@ -80,22 +80,22 @@ def performOpenAMAuthn() {
     // when there will be a response available ...
     // Need to use 'thenAsync' instead of 'then' because we'll return another promise, not directly a response
             .thenAsync({ authenticateResponse ->
-        logger.info("User Authentication Response : ${authenticateResponse.entity.json}")
-        data = authenticateResponse.entity.json
-        def tokenId = data['tokenId']
+                logger.info("User Authentication Response : ${authenticateResponse.entity.json}")
+                data = authenticateResponse.entity.json
+                def tokenId = data['tokenId']
 
-        // If cookie validation succeeds and has valid uid
-        if (null != tokenId) {
-            logger.info("User Authentication Successful, Invoking next handler")
+                // If cookie validation succeeds and has valid uid
+                if (null != tokenId) {
+                    logger.info("User Authentication Successful, Invoking next handler")
 
-            return callNextHandler(tokenId)
-        } else {
-            logger.info("User Authentication Failed")
-            // In case of any failure like authentication failure, server exception etc, return UNAUTHORIZED status. This can be modified to return specific response status for different failures.
-            // No need to call next.handle() as we want to terminate handing here
-            return getUnauthorizedError()
-        }
-    } as AsyncFunction)
+                    return callNextHandler(tokenId)
+                } else {
+                    logger.info("User Authentication Failed")
+                    // In case of any failure like authentication failure, server exception etc, return UNAUTHORIZED status. This can be modified to return specific response status for different failures.
+                    // No need to call next.handle() as we want to terminate handing here
+                    return getUnauthorizedError()
+                }
+            } as AsyncFunction)
 }
 
 // Check if OpenAM session cookie is present
@@ -108,27 +108,27 @@ if (null != request.cookies['iPlanetDirectoryPro']) {
     Request validation = new Request()
     validation.uri = "${openamUrl}/json/sessions?_action=validate"
     validation.method = "POST"
-    validation.entity.json = ['tokenId':openAMCookie]
+    validation.entity.json = ['tokenId': openAMCookie]
 
     return http.send(context, validation)
     // when there will be a response available ...
     // Need to use 'thenAsync' instead of 'then' because we'll return another promise, not directly a response
             .thenAsync({ validationResponse ->
-        logger.info("Token Validation Response : ${validationResponse.entity.json}")
-        def data = validationResponse.entity.json
-        def isTokenValid = data['valid']
+                logger.info("Token Validation Response : ${validationResponse.entity.json}")
+                def data = validationResponse.entity.json
+                def isTokenValid = data['valid']
 
-        // If cookie validation succeeds
-        if (isTokenValid) {
-            logger.info("Valid OpenAM session, skipping authentication")
+                // If cookie validation succeeds
+                if (isTokenValid) {
+                    logger.info("Valid OpenAM session, skipping authentication")
 
-            return callNextHandler(openAMCookie)
-        } else {
-            logger.info("Invalid OpenAM session, Proceeding to perform OpenAM Basic Authentication")
+                    return callNextHandler(openAMCookie)
+                } else {
+                    logger.info("Invalid OpenAM session, Proceeding to perform OpenAM Basic Authentication")
 
-            return performOpenAMAuthn()
-        }
-    } as AsyncFunction)
+                    return performOpenAMAuthn()
+                }
+            } as AsyncFunction)
 } else {
     return performOpenAMAuthn()
 }

@@ -46,7 +46,9 @@
         "config": {
           "status": 200,
           "headers": {
-            "Content-Type": [ "text/html" ]
+            "Content-Type": [
+              "text/html"
+            ]
           },
           "entity": "<html><body><h2>Decoded access_token: ${contexts.oauth2.accessToken.info}</h2></body></html>"
         }
