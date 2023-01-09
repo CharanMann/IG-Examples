@@ -1,0 +1,65 @@
+{
+  "name": "client-credentials",
+  "condition": "${find(request.uri.path, '^/client-credentials')}",
+  "globalDecorators": {
+    "capture": "all"
+  },
+  "heap": [
+    {
+      "name": "clientSecretAccessTokenExchangeHandler",
+      "type": "Chain",
+      "capture": "all",
+      "config": {
+        "filters": [
+          {
+            "type": "ClientSecretBasicAuthenticationFilter",
+            "config": {
+              "clientId": "client-service",
+              "clientSecretId": "client.secret.id",
+              "secretsProvider": {
+                "type": "Base64EncodedSecretStore",
+                "config": {
+                  "secrets": {
+                    "client.secret.id": "cGFzc3dvcmQ="
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "handler": "ForgeRockClientHandler"
+      }
+    },
+    {
+      "name": "oauth2EnabledClientHandler",
+      "type": "Chain",
+      "capture": "all",
+      "config": {
+        "filters": [
+          {
+            "type": "ClientCredentialsOAuth2ClientFilter",
+            "config": {
+              "tokenEndpoint": "${frConfigs.amUrl}/oauth2/alpha/access_token",
+              "endpointHandler": "clientSecretAccessTokenExchangeHandler",
+              "scopes": [
+                "client-scope"
+              ]
+            }
+          }
+        ],
+        "handler": "ForgeRockClientHandler"
+      }
+    }
+  ],
+  "handler": {
+    "type": "ScriptableHandler",
+    "config": {
+      "type": "application/x-groovy",
+      "clientHandler": "oauth2EnabledClientHandler",
+      "source": [
+        "request.uri.path = '/oauth2-protected-resource'",
+        "return http.send(context, request);"
+      ]
+    }
+  }
+}

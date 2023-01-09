@@ -1,0 +1,53 @@
+{
+  "name": "01-pep-igApp",
+  "baseURI": "http://igApp7.example.com:8081",
+  "condition": "${matches(request.uri.path, '^/home/pep-sso')}",
+  "capture": "all",
+  "handler": {
+    "type": "Chain",
+    "config": {
+      "filters": [
+        "SSOFilter",
+        {
+          "name": "PolicyEnforcementFilter-1",
+          "type": "PolicyEnforcementFilter",
+          "config": {
+            "pepRealm": "${frConfigs.amRealm}",
+            "application": "${frConfigs.amPolicyApp}",
+            "ssoTokenSubject": "${contexts.ssoToken.value}",
+            "amService": "AMService",
+            "failureHandler": {
+              "type": "StaticResponseHandler",
+              "config": {
+                "status": 403,
+                "entity": "<html><body>Restricted area. You do not have sufficient privileges. <br><br>Contact your administrator</body></html>"
+              }
+            }
+          },
+          "capture": "all"
+        },
+        {
+          "name": "UserProfileFilter-1",
+          "type": "UserProfileFilter",
+          "config": []
+        },
+        "JwtBuilderFilter-gr1",
+        {
+          "name": "addHeaders",
+          "type": "HeaderFilter",
+          "config": {
+            "messageType": "REQUEST",
+            "add": {
+              "X-IG-JWT": [
+                "${contexts.jwtBuilder.value}"
+              ]
+            }
+          },
+          "capture": "all"
+        }
+      ],
+      "handler": "ReverseProxyHandler"
+    },
+    "capture": "all"
+  }
+}

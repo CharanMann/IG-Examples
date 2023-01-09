@@ -60,8 +60,6 @@
     <orderEntry type="library" name="Maven: org.glassfish.tyrus:tyrus-core:1.17" level="project" />
     <orderEntry type="library" name="Maven: org.glassfish.tyrus:tyrus-spi:1.17" level="project" />
     <orderEntry type="library" name="Maven: javax.websocket:javax.websocket-api:1.1" level="project" />
-    <orderEntry type="library" name="Maven: jakarta.xml.bind:jakarta.xml.bind-api:2.3.2" level="project" />
-    <orderEntry type="library" name="Maven: jakarta.activation:jakarta.activation-api:1.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.glassfish.tyrus:tyrus-container-grizzly-client:1.17" level="project" />
     <orderEntry type="library" name="Maven: org.glassfish.grizzly:grizzly-http-server:2.3.22" level="project" />
     <orderEntry type="library" name="Maven: io.vertx:vertx-core:3.9.2" level="project" />

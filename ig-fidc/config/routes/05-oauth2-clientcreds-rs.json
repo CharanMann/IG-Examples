@@ -1,0 +1,122 @@
+{
+  "name": "05-oauth2-clientcreds-rs",
+  "condition": "${find(request.uri.path, '^/api1')}",
+  "globalDecorators": {
+    "capture": "all"
+  },
+  "heap": [
+  ],
+  "handler": {
+    "type": "Chain",
+    "config": {
+      "filters": [
+        {
+          "name": "CredentialsDecoder",
+          "type": "ScriptableFilter",
+          "config": {
+            "type": "application/x-groovy",
+            "file": "credsDecoder.groovy",
+            "args": {
+              "realm": "Protected Area"
+            }
+          }
+        },
+        {
+          "name": "RemoveAuthHeader",
+          "type": "HeaderFilter",
+          "config": {
+            "messageType": "REQUEST",
+            "remove": [
+              "Authorization"
+            ]
+          }
+        },
+        {
+          "name": "ClientCredentialsOAuth2ClientFilter-1",
+          "type": "ClientCredentialsOAuth2ClientFilter",
+          "config": {
+            "tokenEndpoint": "${frConfigs.amUrl}/oauth2/alpha/access_token",
+            "scopes": [
+              "client-scope"
+            ],
+            "handler": {
+              "name": "FRClientHandler-1",
+              "type": "Chain",
+              "config": {
+                "filters": [
+                  {
+                    "name": "DebugFilter",
+                    "type": "ScriptableFilter",
+                    "config": {
+                      "type": "application/x-groovy",
+                      "file": "debug.groovy"
+                    }
+                  },
+                  {
+                    "name": "AddAuthHeader-1",
+                    "type": "HeaderFilter",
+                    "config": {
+                      "messageType": "REQUEST",
+                      "add": {
+                        "Authorization": [
+                          "${contexts.attributes.updatedAuthorizationHeader}"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "handler": "ForgeRockClientHandler"
+              }
+            }
+          }
+        },
+        {
+          "name": "OAuth2ResourceServerFilter-1",
+          "type": "OAuth2ResourceServerFilter",
+          "config": {
+            "scopes": [
+              "client-scope"
+            ],
+            "requireHttps": false,
+            "realm": "OpenIG",
+            "accessTokenResolver": {
+              "name": "TokenIntrospectionAccessTokenResolver-1",
+              "type": "TokenIntrospectionAccessTokenResolver",
+              "config": {
+                "amService": "AMService",
+                "providerHandler": {
+                  "type": "Chain",
+                  "config": {
+                    "filters": [
+                      {
+                        "type": "HttpBasicAuthenticationClientFilter",
+                        "config": {
+                          "username": "${frConfigs.igAgentName}",
+                          "passwordSecretId": "agent.secret.id",
+                          "secretsProvider": "FileSystemSecretStore-1"
+                        }
+                      }
+                    ],
+                    "handler": "ForgeRockClientHandler"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "handler": {
+        "type": "StaticResponseHandler",
+        "config": {
+          "status": 200,
+          "headers": {
+            "Content-Type": [
+              "text/html; charset=UTF-8"
+            ]
+          },
+          "entity": "<html><body><h2>Access Granted</h2></body></html>"
+        }
+      }
+    }
+  }
+}

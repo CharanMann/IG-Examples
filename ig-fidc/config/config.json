@@ -54,7 +54,6 @@
           "passwordSecretId": "agent.secret.id"
         },
         "secretsProvider": "FileSystemSecretStore-1",
-        "version": "7.1",
         "notifications": {
           "enabled": false
         }
